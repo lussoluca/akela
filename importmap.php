@@ -16,14 +16,14 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
-    '@hotwired/stimulus' => [
-        'version' => '3.2.2',
-    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    '@hotwired/stimulus' => [
+        'version' => '3.2.2',
+    ],
     '@hotwired/turbo' => [
-        'version' => '7.3.0',
+        'version' => '8.0.5',
     ],
     '@tailwindcss/forms' => [
         'version' => '0.5.7',
@@ -32,15 +32,15 @@ return [
         'version' => '1.4.4',
     ],
     'tailwindcss/plugin' => [
-        'version' => '3.3.5',
+        'version' => '3.4.6',
     ],
     'tailwindcss/defaultTheme' => [
-        'version' => '3.3.5',
+        'version' => '3.4.6',
     ],
     'tailwindcss/colors' => [
-        'version' => '3.3.5',
+        'version' => '3.4.6',
     ],
     'picocolors' => [
-        'version' => '1.0.0',
+        'version' => '1.0.1',
     ],
 ];

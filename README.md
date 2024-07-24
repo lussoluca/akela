@@ -1,7 +1,7 @@
 # Installazione in locale
 
 * Clona il repository
-* Install DDEV
+* Installa DDEV
 * Esegui `ddev start`
 * Entra nel container con `ddev ssh`
 * Da dentro al container esegui `composer install`

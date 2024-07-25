@@ -43,4 +43,28 @@ return [
     'picocolors' => [
         'version' => '1.0.1',
     ],
+    'fullcalendar' => [
+        'version' => '5.11.5',
+    ],
+    '@fullcalendar/common' => [
+        'version' => '5.11.5',
+    ],
+    '@fullcalendar/core' => [
+        'version' => '5.11.5',
+    ],
+    '@fullcalendar/daygrid' => [
+        'version' => '5.11.5',
+    ],
+    'tslib' => [
+        'version' => '2.6.2',
+    ],
+    'preact' => [
+        'version' => '10.12.1',
+    ],
+    'preact/compat' => [
+        'version' => '10.12.1',
+    ],
+    'preact/hooks' => [
+        'version' => '10.12.1',
+    ],
 ];

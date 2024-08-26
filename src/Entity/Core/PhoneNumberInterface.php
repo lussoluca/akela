@@ -36,7 +36,7 @@ interface PhoneNumberInterface
     /**
      * Return TRUE if this and other phone numbers are equal.
      *
-     * @param \App\Entity\Core\PhoneNumber $other The other phone number
+     * @param PhoneNumber $other The other phone number
      *
      * @return bool TRUE if this and other phone numbers are equal
      */

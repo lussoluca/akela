@@ -1,0 +1,50 @@
+name: Coding standard
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+
+    steps:
+    - name: Setup PHP with PECL extension
+      uses: shivammathur/setup-php@v2
+      with:
+       php-version: '8.2'
+       extensions: json, openssl, pdo, redis
+    - uses: actions/checkout@v2
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Phpstan
+      run: |
+        composer install --working-dir=tools/phpstan
+        tools/phpstan/vendor/bin/phpstan
+
+    - name: PHP Coding Standards Fixer
+      run: |
+        composer install --working-dir=tools/php-cs-fixer
+        tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation
+
+    - name: PHPUnit
+      run: |
+        bin/phpunit

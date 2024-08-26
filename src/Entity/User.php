@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use App\Entity\Core\PhoneNumber;
-use Symfony\Component\Uid\UuidV4;
-use Doctrine\ORM\Mapping\Embedded;
-use Doctrine\ORM\Mapping\OneToOne;
-use App\Entity\Core\EmailInterface;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Gedmo\Mapping\Annotation as Gedmo;
 use App\Entity\Core\AddressInterface;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Core\EmailInterface;
+use App\Entity\Core\PhoneNumber;
 use App\Entity\Core\Traits\CollectionsTrait;
+use App\Entity\Core\Traits\SoftDeleteableEntity;
 use App\Entity\Core\Traits\TimestampableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Entity\Core\Traits\SoftDeleteableEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embedded;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -88,15 +88,14 @@ class User implements UserInterface
      * User constructor.
      */
     public function __construct(
-        EmailInterface   $email,
-        string           $password,
-        PhoneNumber      $phoneNumber,
+        EmailInterface $email,
+        string $password,
+        PhoneNumber $phoneNumber,
         AddressInterface $address,
-        int              $birthYear,
-        string           $name,
-        string           $surname
-    )
-    {
+        int $birthYear,
+        string $name,
+        string $surname
+    ) {
         $this->id = new UuidV4();
         $this->email = $email;
         $this->password = $password;
@@ -170,7 +169,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return $this->getName() . ' ' . $this->getSurname();
+        return $this->getName().' '.$this->getSurname();
     }
 
     public function getUserIdentifier(): string
@@ -231,15 +230,14 @@ class User implements UserInterface
      * @return $this
      */
     public function update(
-        EmailInterface   $email,
-        PhoneNumber      $phoneNumber,
+        EmailInterface $email,
+        PhoneNumber $phoneNumber,
         AddressInterface $address,
-        int              $birthYear,
-        string           $name,
-        string           $surname,
-        ?string          $bio,
-    ): self
-    {
+        int $birthYear,
+        string $name,
+        string $surname,
+        ?string $bio,
+    ): self {
         if (!$this->phoneNumber->equal($phoneNumber)) {
             $this->phoneNumber = $phoneNumber;
         }

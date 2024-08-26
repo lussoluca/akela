@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
-use App\Entity\Enum\UnitType;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Column;
-use Symfony\Component\Uid\UuidV4;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Gedmo\Mapping\Annotation as Gedmo;
 use App\Entity\Core\Traits\CollectionsTrait;
-use App\Entity\Core\Traits\TimestampableEntity;
 use App\Entity\Core\Traits\SoftDeleteableEntity;
+use App\Entity\Core\Traits\TimestampableEntity;
+use App\Entity\Enum\UnitType;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Uid\UuidV4;
 
 #[Entity]
 class Unit implements UnitInterface
@@ -41,17 +41,14 @@ class Unit implements UnitInterface
     #[Column(enumType: UnitType::class)]
     private ?UnitType $type = null;
 
-
     public function __construct(
-        string                $name,
+        string $name,
         OrganizationInterface $group,
-    )
-    {
+    ) {
         $this->id = new UuidV4();
         $this->name = $name;
         $this->group = $group;
     }
-
 
     public function getGroup(): OrganizationInterface
     {

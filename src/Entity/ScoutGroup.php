@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
-use App\Entity\Core\PhoneNumber;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Symfony\Component\Uid\UuidV4;
-use Doctrine\ORM\Mapping\Embedded;
 use App\Entity\Core\EmailInterface;
+use App\Entity\Core\PhoneNumber;
+use App\Entity\Core\Traits\CollectionsTrait;
+use App\Entity\Core\Traits\SoftDeleteableEntity;
+use App\Entity\Core\Traits\TimestampableEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embedded;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\Collection;
-use App\Entity\Core\Traits\CollectionsTrait;
-use App\Entity\Core\Traits\TimestampableEntity;
-use App\Entity\Core\Traits\SoftDeleteableEntity;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * Class Organization.
@@ -68,21 +68,18 @@ class ScoutGroup implements OrganizationInterface
     #[OneToMany(targetEntity: 'App\Entity\Unit', mappedBy: 'group')]
     private Collection $units;
 
-
     /**
      * Organization constructor.
-     *
      */
     public function __construct(
-        string                $name,
-        string                $businessName,
-        string                $description,
-        ?PhoneNumber          $phoneNumber,
-        ?EmailInterface       $email,
-        ?string               $website,
+        string $name,
+        string $businessName,
+        string $description,
+        ?PhoneNumber $phoneNumber,
+        ?EmailInterface $email,
+        ?string $website,
         Core\AddressInterface $address,
-    )
-    {
+    ) {
         $this->id = new UuidV4();
         $this->name = $name;
         $this->businessName = $businessName;
@@ -133,7 +130,7 @@ class ScoutGroup implements OrganizationInterface
         }
 
         if (!preg_match('~^(?:f|ht)tps?://~i', $website)) {
-            $website = 'http://' . $website;
+            $website = 'http://'.$website;
         }
 
         return $website;
@@ -150,16 +147,14 @@ class ScoutGroup implements OrganizationInterface
     }
 
     public function update(
-        string                $name,
-        string                $businessName,
-        string                $description,
-        ?PhoneNumber          $phoneNumber,
-        ?EmailInterface       $email,
-        ?string               $website,
+        string $name,
+        string $businessName,
+        string $description,
+        ?PhoneNumber $phoneNumber,
+        ?EmailInterface $email,
+        ?string $website,
         Core\AddressInterface $address,
-    ): self
-    {
-
+    ): self {
         $this->name = $name;
         $this->businessName = $businessName;
         $this->description = $description;

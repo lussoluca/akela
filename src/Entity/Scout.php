@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
+use App\Repository\ScoutRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\Uid\UuidV4;
-use App\Repository\ScoutRepository;
 
 #[ORM\Entity(repositoryClass: ScoutRepository::class)]
 class Scout extends Person
 {
-
     #[Id]
     #[Column(type: 'uuid', unique: true)]
     private UuidV4 $id;

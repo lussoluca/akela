@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Column;
-use Symfony\Component\Uid\UuidV4;
 use App\Entity\Core\Traits\TimestampableEntity;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Symfony\Component\Uid\UuidV4;
 
 #[Entity]
 class Settings implements SettingsInterface

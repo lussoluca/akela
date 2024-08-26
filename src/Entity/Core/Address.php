@@ -34,8 +34,7 @@ class Address implements \Stringable
         $postalCode = '',
         $addressLine1 = '',
         $addressLine2 = '',
-    )
-    {
+    ) {
         $this->city = $city;
         $this->province = $province;
         $this->postalCode = $postalCode;

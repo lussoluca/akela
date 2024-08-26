@@ -2,16 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Core\Traits\SoftDeleteableEntity;
+use App\Entity\Core\Traits\TimestampableEntity;
 use App\Entity\Enum\Gender;
-use Doctrine\ORM\Mapping\Id;
+use App\Repository\ProfileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\Uid\UuidV4;
-use App\Repository\ProfileRepository;
-use Doctrine\Common\Collections\Collection;
-use App\Entity\Core\Traits\TimestampableEntity;
-use Doctrine\Common\Collections\ArrayCollection;
-use App\Entity\Core\Traits\SoftDeleteableEntity;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
 class Profile
@@ -29,13 +29,13 @@ class Profile
     #[ORM\OneToMany(targetEntity: Scout::class, mappedBy: 'parent1Profile')]
     private Collection $scouts;
 
-    #[ORM\Column(length: 255)]
+    #[Column(length: 255)]
     private ?string $firstname = null;
 
-    #[ORM\Column(length: 255)]
+    #[Column(length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
+    #[Column(length: 20, nullable: true)]
     private ?string $phone = null;
 
     #[ORM\ManyToOne]

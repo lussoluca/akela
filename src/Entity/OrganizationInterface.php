@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Core\PhoneNumber;
-use Symfony\Component\Uid\UuidV4;
+use App\Entity\Core\AddressInterface;
 use App\Entity\Core\EmailInterface;
+use App\Entity\Core\PhoneNumber;
 use App\Entity\Core\VisibleInterface;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * Interface OrganizationInterface.
@@ -28,7 +29,7 @@ interface OrganizationInterface extends VisibleInterface
 
     public function getWebsite(): ?string;
 
-    public function getAddress(): Core\AddressInterface;
+    public function getAddress(): AddressInterface;
 
     public function getSlug(): string;
 
@@ -39,13 +40,13 @@ interface OrganizationInterface extends VisibleInterface
         ?PhoneNumber $phoneNumber,
         ?EmailInterface $email,
         ?string $website,
-        \App\Entity\Core\AddressInterface $address,
+        AddressInterface $address,
     ): self;
 
     /**
      * Return TRUE if this and other organization are equal.
      *
-     * @param \App\Entity\OrganizationInterface $other The other organization
+     * @param OrganizationInterface $other The other organization
      *
      * @return bool TRUE if this and other organization are equal
      */

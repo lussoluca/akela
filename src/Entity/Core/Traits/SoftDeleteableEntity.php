@@ -12,7 +12,7 @@ trait SoftDeleteableEntity
     /**
      * Set or clear the deleted at timestamp.
      */
-    public function setDeletedAt(\DateTime $deletedAt = null): self
+    public function setDeletedAt(?\DateTime $deletedAt = null): self
     {
         $this->deletedAt = $deletedAt;
 

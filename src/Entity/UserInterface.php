@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Symfony\Component\Uid\UuidV4;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * Interface UserInterface.
@@ -36,7 +36,6 @@ interface UserInterface extends SymfonyUserInterface, PasswordAuthenticatedUserI
     /**
      * @return array<string, \App\Entity\OrganizationInterface>
      */
-
     public function isVisible(): bool;
 
     public function getSettings(): SettingsInterface;
@@ -53,13 +52,13 @@ interface UserInterface extends SymfonyUserInterface, PasswordAuthenticatedUserI
     public function isDeleted();
 
     public function update(
-        Core\EmailInterface   $email,
-        Core\PhoneNumber      $phoneNumber,
+        Core\EmailInterface $email,
+        Core\PhoneNumber $phoneNumber,
         Core\AddressInterface $address,
-        int                   $birthYear,
-        string                $name,
-        string                $surname,
-        ?string               $bio,
+        int $birthYear,
+        string $name,
+        string $surname,
+        ?string $bio,
     ): self;
 
     public function updatePassword(string $password): self;

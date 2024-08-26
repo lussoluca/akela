@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use App\Entity\Enum\Role;
-use Doctrine\ORM\Mapping\Id;
+use App\Repository\RoleInUnitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\Uid\UuidV4;
-use App\Repository\RoleInUnitRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: RoleInUnitRepository::class)]
 class RoleInUnit
@@ -18,7 +18,7 @@ class RoleInUnit
     #[Column(type: 'uuid', unique: true)]
     private UuidV4 $id;
 
-    #[ORM\Column(enumType: Role::class)]
+    #[Column(enumType: Role::class)]
     private ?Role $role = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]

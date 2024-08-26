@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
+use App\Entity\Core\Traits\SoftDeleteableEntity;
+use App\Entity\Core\Traits\TimestampableEntity;
+use App\Repository\MedicalDataRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\Uid\UuidV4;
-use App\Repository\MedicalDataRepository;
-use App\Entity\Core\Traits\TimestampableEntity;
-use App\Entity\Core\Traits\SoftDeleteableEntity;
 
 #[ORM\Entity(repositoryClass: MedicalDataRepository::class)]
 class MedicalData
@@ -22,7 +22,6 @@ class MedicalData
 
     #[ORM\OneToOne(mappedBy: 'medicalData', cascade: ['persist', 'remove'])]
     private ?Person $person = null;
-
 
     public function __construct()
     {
@@ -42,12 +41,12 @@ class MedicalData
     public function setPerson(?Person $person): static
     {
         // unset the owning side of the relation if necessary
-        if ($person === null && $this->person !== null) {
+        if (null === $person && null !== $this->person) {
             $this->person->setMedicalData(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($person !== null && $person->getMedicalData() !== $this) {
+        if (null !== $person && $person->getMedicalData() !== $this) {
             $person->setMedicalData($this);
         }
 

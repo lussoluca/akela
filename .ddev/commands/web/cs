@@ -1,0 +1,5 @@
+#!/bin/bash
+
+tools/php-cs-fixer/vendor/bin/php-cs-fixer fix
+tools/phpstan/vendor/bin/phpstan
+

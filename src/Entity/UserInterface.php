@@ -36,7 +36,6 @@ interface UserInterface extends SymfonyUserInterface, PasswordAuthenticatedUserI
     /**
      * @return array<string, \App\Entity\OrganizationInterface>
      */
-    public function getOrganizations(): array;
 
     public function isVisible(): bool;
 

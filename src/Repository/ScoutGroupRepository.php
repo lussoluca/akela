@@ -55,4 +55,13 @@ class ScoutGroupRepository
 
         return $this->objectRepository->find($id);
     }
+
+    public function findAll(bool $allowDeleted = false): ?ScoutGroup
+    {
+        if ($allowDeleted && $this->entityManager->getFilters()->isEnabled('softdeleteable')) {
+            $this->entityManager->getFilters()->disable('softdeleteable');
+        }
+
+        return $this->objectRepository->findAll();
+    }
 }

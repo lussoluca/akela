@@ -11,9 +11,9 @@ use App\Entity\Core\PhoneNumber;
 use Symfony\Component\Uid\UuidV4;
 use Doctrine\ORM\Mapping\Embedded;
 use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\OneToMany;
 use App\Entity\Core\EmailInterface;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Entity\Core\AddressInterface;
@@ -74,15 +74,15 @@ class User implements UserInterface
     #[Column(type: 'text', nullable: true)]
     private ?string $bio;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection<int,\App\Entity\Membership>
-     */
-    #[OneToMany(targetEntity: 'App\Entity\Membership', mappedBy: 'user')]
-    private Collection $memberships;
-
     #[OneToOne(targetEntity: 'App\Entity\Settings', cascade: ['persist'])]
     #[JoinColumn(name: 'settings_id', referencedColumnName: 'id', nullable: true)]
     private SettingsInterface $settings;
+
+    /**
+     * @var Collection<int, Person>
+     */
+    #[ManyToMany(targetEntity: Person::class, inversedBy: 'users')]
+    private Collection $managedPersons;
 
     /**
      * User constructor.
@@ -105,8 +105,7 @@ class User implements UserInterface
         $this->birthYear = $birthYear;
         $this->name = $name;
         $this->surname = $surname;
-
-        $this->memberships = new ArrayCollection();
+        $this->managedPersons = new ArrayCollection();
     }
 
     public function getId(): UuidV4
@@ -199,22 +198,6 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function getOrganizations(): array
-    {
-        $organizations = [];
-
-        /** @var MembershipInterface $membership */
-        foreach ($this->memberships as $membership) {
-            try {
-                $organizations[$membership->getOrganization()->getName()] = $membership->getOrganization();
-            } catch (\Exception $e) {
-                // On error skip the organization.
-            }
-        }
-
-        return $organizations;
-    }
-
     public function isVisible(): bool
     {
         return $this->getSettings()->hasPublicProfile();
@@ -300,5 +283,29 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Person>
+     */
+    public function getManagedPersons(): Collection
+    {
+        return $this->managedPersons;
+    }
+
+    public function addManagedPerson(Person $managedPerson): static
+    {
+        if (!$this->managedPersons->contains($managedPerson)) {
+            $this->managedPersons->add($managedPerson);
+        }
+
+        return $this;
+    }
+
+    public function removeManagedPerson(Person $managedPerson): static
+    {
+        $this->managedPersons->removeElement($managedPerson);
+
+        return $this;
     }
 }

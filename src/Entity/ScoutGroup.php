@@ -65,7 +65,7 @@ class ScoutGroup implements OrganizationInterface
     /**
      * @var \Doctrine\Common\Collections\Collection<int,\App\Entity\Unit>
      */
-    #[OneToMany(targetEntity: 'App\Entity\Membership', mappedBy: 'organization')]
+    #[OneToMany(targetEntity: 'App\Entity\Unit', mappedBy: 'group')]
     private Collection $units;
 
 

@@ -6,7 +6,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
 
     steps:
     - name: Setup PHP with PECL extension

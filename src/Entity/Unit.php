@@ -32,7 +32,7 @@ class Unit implements UnitInterface
      * @Gedmo\Slug(fields={"name"})
      */
     #[Column(length: 128)]
-    private string $slug;
+    private string $slug; // @phpstan-ignore-line
 
     #[ManyToOne(targetEntity: 'App\Entity\Group', inversedBy: 'units')]
     #[JoinColumn(name: 'organization_id', referencedColumnName: 'id')]

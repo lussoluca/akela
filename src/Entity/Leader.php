@@ -48,8 +48,8 @@ class Leader extends Person
         return $this;
     }
 
-    public function getRole(): Role
+    public function getRole(): ?Role
     {
-        return $this->getRoleInUnit()->getRole();
+        return $this->getRoleInUnit()?->getRole();
     }
 }

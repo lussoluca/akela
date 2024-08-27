@@ -25,9 +25,6 @@ interface UserInterface extends SymfonyUserInterface, PasswordAuthenticatedUserI
 
     public function getInitials(): string;
 
-    /**
-     * @return array<string, \App\Entity\OrganizationInterface>
-     */
     public function isVisible(): bool;
 
     public function getSettings(): SettingsInterface;

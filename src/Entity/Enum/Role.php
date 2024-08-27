@@ -19,7 +19,7 @@ enum Role: string
     case ROLE_AIUTO_CAPO_CLAN = 'aiuto_capo_clan';
     case ROLE_MAESTRO_DEI_NOVIZI = 'maestro_dei_novizi';
 
-    public function label()
+    public function label(): string
     {
         return match ($this) {
             self::ROLE_CAPO_GRUPPO => 'Capo Gruppo',

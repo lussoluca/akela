@@ -6,7 +6,6 @@ namespace App\Entity\Core;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
-use JetBrains\PhpStorm\Pure;
 
 #[Embeddable]
 class PhoneNumber implements PhoneNumberInterface, \Stringable
@@ -87,7 +86,6 @@ class PhoneNumber implements PhoneNumberInterface, \Stringable
         return $this->number == $other->number && $this->country == $other->country;
     }
 
-    #[Pure]
     protected function generatePhoneCode(): string
     {
         $digits = 5;

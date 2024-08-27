@@ -29,11 +29,11 @@ class Address implements \Stringable
     protected string $addressLine2;
 
     public function __construct(
-        $city,
-        $province = '',
-        $postalCode = '',
-        $addressLine1 = '',
-        $addressLine2 = '',
+        string $city,
+        string $province = '',
+        string $postalCode = '',
+        string $addressLine1 = '',
+        string $addressLine2 = '',
     ) {
         $this->city = $city;
         $this->province = $province;

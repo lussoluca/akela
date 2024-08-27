@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Unit;
-use App\Exception\UnitNotFoundException;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Exception\UnitNotFoundException;
 
 class UnitRepository
 {

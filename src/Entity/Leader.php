@@ -4,8 +4,9 @@ namespace App\Entity;
 
 use App\Entity\Core\Traits\SoftDeleteableEntity;
 use App\Entity\Core\Traits\TimestampableEntity;
-use App\Entity\Enum\Role;
 use App\Repository\LeaderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
@@ -21,14 +22,17 @@ class Leader extends Person
     #[Column(type: 'uuid', unique: true)]
     private UuidV4 $id;
 
-    #[ORM\OneToMany(mappedBy: 'leaders')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?RoleInUnit $roleInUnit = null;
+    /**
+     * @var Collection<int, RoleInUnit> $rolesInUnits
+     */
+    #[ORM\ManyToMany(targetEntity: RoleInUnit::class, inversedBy: 'leaders')]
+    private Collection $rolesInUnits;
 
     public function __construct()
     {
         parent::__construct();
         $this->id = new UuidV4();
+        $this->rolesInUnits = new ArrayCollection();
     }
 
     public function getId(): UuidV4
@@ -36,20 +40,27 @@ class Leader extends Person
         return $this->id;
     }
 
-    public function getRoleInUnit(): ?RoleInUnit
+    /**
+     * @return Collection<int, RoleInUnit>
+     */
+    public function getRolesInUnits(): Collection
     {
-        return $this->roleInUnit;
+        return $this->rolesInUnits;
     }
 
-    public function setRoleInUnit(?RoleInUnit $roleInUnit): static
+    public function addRolesInUnit(RoleInUnit $rolesInUnit): static
     {
-        $this->roleInUnit = $roleInUnit;
+        if (!$this->rolesInUnits->contains($rolesInUnit)) {
+            $this->rolesInUnits->add($rolesInUnit);
+        }
 
         return $this;
     }
 
-    public function getRole(): ?Role
+    public function removeRolesInUnit(RoleInUnit $rolesInUnit): static
     {
-        return $this->getRoleInUnit()?->getRole();
+        $this->rolesInUnits->removeElement($rolesInUnit);
+
+        return $this;
     }
 }

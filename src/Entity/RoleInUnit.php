@@ -28,7 +28,7 @@ class RoleInUnit
     /**
      * @var Collection<int, Leader>
      */
-    #[ORM\ManyToOne(targetEntity: Leader::class, inversedBy: 'roleInUnit')]
+    #[ORM\ManyToMany(targetEntity: Leader::class, mappedBy: 'rolesInUnits')]
     private Collection $leaders;
 
     public function __construct()
@@ -72,27 +72,5 @@ class RoleInUnit
     public function getLeaders(): Collection
     {
         return $this->leaders;
-    }
-
-    public function addLeader(Leader $leader): static
-    {
-        if (!$this->leaders->contains($leader)) {
-            $this->leaders->add($leader);
-            $leader->setRoleInUnit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLeader(Leader $leader): static
-    {
-        if ($this->leaders->removeElement($leader)) {
-            // set the owning side to null (unless already changed)
-            if ($leader->getRoleInUnit() === $this) {
-                $leader->setRoleInUnit(null);
-            }
-        }
-
-        return $this;
     }
 }

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\ScoutGroup;
-use App\Exception\UserNotFoundException;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Group;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Exception\UserNotFoundException;
 
 class ScoutGroupRepository
 {
     private EntityManagerInterface $entityManager;
 
     /**
-     * @var EntityRepository<ScoutGroup>
+     * @var EntityRepository<Group>
      */
     private EntityRepository $objectRepository;
 
@@ -22,7 +22,7 @@ class ScoutGroupRepository
     {
         $this->entityManager = $entityManager;
 
-        $repository = $this->entityManager->getRepository(ScoutGroup::class);
+        $repository = $this->entityManager->getRepository(Group::class);
         assert($repository instanceof EntityRepository);
         $this->objectRepository = $repository;
     }
@@ -32,7 +32,7 @@ class ScoutGroupRepository
         return $this->objectRepository->findBy([], ['name' => 'ASC']);
     }
 
-    public function findOrFail(string $id, bool $allowDeleted = false): ScoutGroup
+    public function findOrFail(string $id, bool $allowDeleted = false): Group
     {
         if ($allowDeleted && $this->entityManager->getFilters()->isEnabled('softdeleteable')) {
             $this->entityManager->getFilters()->disable('softdeleteable');
@@ -47,7 +47,7 @@ class ScoutGroupRepository
         return $user;
     }
 
-    public function find(string $id, bool $allowDeleted = false): ?ScoutGroup
+    public function find(string $id, bool $allowDeleted = false): ?Group
     {
         if ($allowDeleted && $this->entityManager->getFilters()->isEnabled('softdeleteable')) {
             $this->entityManager->getFilters()->disable('softdeleteable');
@@ -56,7 +56,7 @@ class ScoutGroupRepository
         return $this->objectRepository->find($id);
     }
 
-    public function findAll(bool $allowDeleted = false): ?ScoutGroup
+    public function findAll(bool $allowDeleted = false): ?Group
     {
         if ($allowDeleted && $this->entityManager->getFilters()->isEnabled('softdeleteable')) {
             $this->entityManager->getFilters()->disable('softdeleteable');

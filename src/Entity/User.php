@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Entity\Core\AddressInterface;
-use App\Entity\Core\EmailInterface;
-use App\Entity\Core\PhoneNumber;
-use App\Entity\Core\Traits\CollectionsTrait;
-use App\Entity\Core\Traits\SoftDeleteableEntity;
-use App\Entity\Core\Traits\TimestampableEntity;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Embedded;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Symfony\Component\Uid\UuidV4;
+use Doctrine\ORM\Mapping\Embedded;
+use Doctrine\ORM\Mapping\OneToOne;
+use App\Entity\Core\EmailInterface;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Uid\UuidV4;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Core\Traits\CollectionsTrait;
+use App\Entity\Core\Traits\TimestampableEntity;
+use App\Entity\Core\Traits\SoftDeleteableEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -40,39 +37,17 @@ class User implements UserInterface
     #[Embedded(class: 'App\Entity\Core\UniqueEmail', columnPrefix: 'email_')]
     private EmailInterface $email;
 
-    #[Embedded(class: 'App\Entity\Core\PhoneNumber', columnPrefix: 'phone_')]
-    private PhoneNumber $phoneNumber;
-
-    #[Embedded(class: 'App\Entity\Core\Address', columnPrefix: 'address_')]
-    private AddressInterface $address;
-
-    #[Column(type: 'integer', length: 4)]
-    private int $birthYear;
-
     #[Column(type: 'string', length: 255)]
     private string $name;
 
     #[Column(type: 'string', length: 255)]
     private string $surname;
 
-    #[ManyToOne(targetEntity: 'App\Entity\Unit', inversedBy: 'users')]
-    #[JoinColumn(name: 'unit_id', referencedColumnName: 'id')]
-    private Unit $unit;
-
-    /**
-     * @var string[]
-     */
-    #[Column(type: 'json')]
-    private array $roles = [];
-
     /**
      * @var string The hashed password
      */
     #[Column(type: 'string')]
     private string $password;
-
-    #[Column(type: 'text', nullable: true)]
-    private ?string $bio;
 
     #[OneToOne(targetEntity: 'App\Entity\Settings', cascade: ['persist'])]
     #[JoinColumn(name: 'settings_id', referencedColumnName: 'id', nullable: true)]
@@ -89,19 +64,14 @@ class User implements UserInterface
      */
     public function __construct(
         EmailInterface $email,
-        string $password,
-        PhoneNumber $phoneNumber,
-        AddressInterface $address,
-        int $birthYear,
-        string $name,
-        string $surname
-    ) {
+        string         $password,
+        string         $name,
+        string         $surname
+    )
+    {
         $this->id = new UuidV4();
         $this->email = $email;
         $this->password = $password;
-        $this->phoneNumber = $phoneNumber;
-        $this->address = $address;
-        $this->birthYear = $birthYear;
         $this->name = $name;
         $this->surname = $surname;
         $this->managedPersons = new ArrayCollection();
@@ -125,21 +95,6 @@ class User implements UserInterface
         return $this->password;
     }
 
-    public function getPhoneNumber(): PhoneNumber
-    {
-        return $this->phoneNumber;
-    }
-
-    public function getAddress(): AddressInterface
-    {
-        return $this->address;
-    }
-
-    public function getBirthYear(): int
-    {
-        return $this->birthYear;
-    }
-
     public function getName(): string
     {
         return $this->name;
@@ -150,16 +105,9 @@ class User implements UserInterface
         return $this->surname;
     }
 
-    public function getBio(): ?string
-    {
-        return $this->bio;
-    }
-
     public function isVerified(): bool
     {
-        return
-            $this->getEmail()->isVerified()
-            && $this->getPhoneNumber()->isVerified();
+        return $this->getEmail()->isVerified();
     }
 
     /**
@@ -169,7 +117,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return $this->getName().' '.$this->getSurname();
+        return $this->getName() . ' ' . $this->getSurname();
     }
 
     public function getUserIdentifier(): string
@@ -185,18 +133,6 @@ class User implements UserInterface
             substr($this->getSurname(), 0, 1);
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
     public function isVisible(): bool
     {
         return $this->getSettings()->hasPublicProfile();
@@ -205,14 +141,6 @@ class User implements UserInterface
     public function getSettings(): SettingsInterface
     {
         return $this->settings ?? new DefaultSettings();
-    }
-
-    public function verifyPhoneNumber(): self
-    {
-        $verified_phone_number = $this->phoneNumber->verified();
-        $this->phoneNumber = $verified_phone_number;
-
-        return $this;
     }
 
     public function verifyEmail(): self
@@ -231,26 +159,17 @@ class User implements UserInterface
      */
     public function update(
         EmailInterface $email,
-        PhoneNumber $phoneNumber,
-        AddressInterface $address,
-        int $birthYear,
-        string $name,
-        string $surname,
-        ?string $bio,
-    ): self {
-        if (!$this->phoneNumber->equal($phoneNumber)) {
-            $this->phoneNumber = $phoneNumber;
-        }
+        string         $name,
+        string         $surname,
+    ): self
+    {
 
         if (!$this->email->equal($email)) {
             $this->email = $email;
         }
 
-        $this->address = $address;
-        $this->birthYear = $birthYear;
         $this->name = $name;
         $this->surname = $surname;
-        $this->bio = $bio;
 
         return $this;
     }
@@ -305,5 +224,11 @@ class User implements UserInterface
         $this->managedPersons->removeElement($managedPerson);
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        // TODO: Implement getRoles() method.
+        return [];
     }
 }

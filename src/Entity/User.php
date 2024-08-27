@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Symfony\Component\Uid\UuidV4;
-use Doctrine\ORM\Mapping\Embedded;
-use Doctrine\ORM\Mapping\OneToOne;
 use App\Entity\Core\EmailInterface;
+use App\Entity\Core\Traits\CollectionsTrait;
+use App\Entity\Core\Traits\SoftDeleteableEntity;
+use App\Entity\Core\Traits\TimestampableEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Embedded;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\Collection;
-use App\Entity\Core\Traits\CollectionsTrait;
-use App\Entity\Core\Traits\TimestampableEntity;
-use App\Entity\Core\Traits\SoftDeleteableEntity;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -64,11 +64,10 @@ class User implements UserInterface
      */
     public function __construct(
         EmailInterface $email,
-        string         $password,
-        string         $name,
-        string         $surname
-    )
-    {
+        string $password,
+        string $name,
+        string $surname
+    ) {
         $this->id = new UuidV4();
         $this->email = $email;
         $this->password = $password;
@@ -117,7 +116,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return $this->getName() . ' ' . $this->getSurname();
+        return $this->getName().' '.$this->getSurname();
     }
 
     public function getUserIdentifier(): string
@@ -159,11 +158,9 @@ class User implements UserInterface
      */
     public function update(
         EmailInterface $email,
-        string         $name,
-        string         $surname,
-    ): self
-    {
-
+        string $name,
+        string $surname,
+    ): self {
         if (!$this->email->equal($email)) {
             $this->email = $email;
         }

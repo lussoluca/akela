@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Group;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Exception\UserNotFoundException;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
 class ScoutGroupRepository
 {
@@ -26,7 +26,6 @@ class ScoutGroupRepository
         assert($repository instanceof EntityRepository);
         $this->objectRepository = $repository;
     }
-
 
     /** @return Group[]  */
     public function all(): array

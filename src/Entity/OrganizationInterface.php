@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Symfony\Component\Uid\UuidV4;
 use App\Entity\Core\VisibleInterface;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * Interface OrganizationInterface.

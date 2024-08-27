@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping\Id;
+use App\Entity\Core\Traits\CollectionsTrait;
+use App\Entity\Core\Traits\SoftDeleteableEntity;
+use App\Entity\Core\Traits\TimestampableEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Symfony\Component\Uid\UuidV4;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\Common\Collections\Collection;
-use App\Entity\Core\Traits\CollectionsTrait;
-use App\Entity\Core\Traits\TimestampableEntity;
-use App\Entity\Core\Traits\SoftDeleteableEntity;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Uid\UuidV4;
 
 /**
  * Class Organization.

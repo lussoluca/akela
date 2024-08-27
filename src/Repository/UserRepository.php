@@ -27,6 +27,7 @@ class UserRepository
         $this->objectRepository = $repository;
     }
 
+    /** @return User[]  */
     public function all(): array
     {
         return $this->objectRepository->findBy([], ['surname' => 'ASC']);

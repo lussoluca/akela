@@ -27,6 +27,8 @@ class ScoutGroupRepository
         $this->objectRepository = $repository;
     }
 
+
+    /** @return Group[]  */
     public function all(): array
     {
         return $this->objectRepository->findBy([], ['name' => 'ASC']);
@@ -56,7 +58,8 @@ class ScoutGroupRepository
         return $this->objectRepository->find($id);
     }
 
-    public function findAll(bool $allowDeleted = false): ?Group
+    /** @return Group[]  */
+    public function findAll(bool $allowDeleted = false): array
     {
         if ($allowDeleted && $this->entityManager->getFilters()->isEnabled('softdeleteable')) {
             $this->entityManager->getFilters()->disable('softdeleteable');

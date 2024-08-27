@@ -27,6 +27,7 @@ class UnitRepository
         $this->objectRepository = $repository;
     }
 
+    /** @return Unit[]  */
     public function all(): array
     {
         return $this->objectRepository->findBy([], ['name' => 'ASC']);

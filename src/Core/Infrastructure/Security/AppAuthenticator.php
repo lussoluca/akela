@@ -41,7 +41,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $fiscal_code = $request->request->get('fiscal_code');
+        $fiscal_code = $request->request->get('email');
         $password = $request->request->get('password');
         $csrfToken = $request->request->get('_csrf_token');
 

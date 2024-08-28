@@ -8,8 +8,14 @@ use App\Core\Infrastructure\Persistence\Repository\LeaderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
+/**
+ * Class Leader.
+ *
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ */
 #[ORM\Entity(repositoryClass: LeaderRepository::class)]
 class Leader extends Person
 {
@@ -27,7 +33,6 @@ class Leader extends Person
 
     public function __construct()
     {
-        parent::__construct();
         $this->id = new UuidV4();
         $this->rolesInUnits = new ArrayCollection();
     }

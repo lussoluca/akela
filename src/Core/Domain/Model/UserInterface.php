@@ -25,10 +25,6 @@ interface UserInterface extends SymfonyUserInterface, PasswordAuthenticatedUserI
 
     public function getInitials(): string;
 
-    public function isVerified(): bool;
-
-    public function verifyEmail(): self;
-
     /**
      * @phpstan-ignore-next-line
      */

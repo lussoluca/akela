@@ -17,12 +17,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
 /**
- * Class Organization.
+ * Class Group.
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 #[Entity]
-class Group implements OrganizationInterface
+class Group implements GroupInterface
 {
     use TimestampableEntity;
     use SoftDeleteableEntity;
@@ -45,7 +45,7 @@ class Group implements OrganizationInterface
     private Collection $units;
 
     /**
-     * Organization constructor.
+     * Group constructor.
      */
     public function __construct(
         string $name,
@@ -82,13 +82,8 @@ class Group implements OrganizationInterface
         return $this;
     }
 
-    public function equal(OrganizationInterface $other): bool
+    public function equal(GroupInterface $other): bool
     {
         return $this->getId() === $other->getId();
-    }
-
-    public function isVisible(): bool
-    {
-        return !$this->isDeleted();
     }
 }

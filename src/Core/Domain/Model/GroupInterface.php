@@ -9,7 +9,7 @@ use Symfony\Component\Uid\UuidV4;
 /**
  * Interface OrganizationInterface.
  */
-interface OrganizationInterface extends VisibleInterface
+interface GroupInterface
 {
     public function getId(): UuidV4;
 
@@ -25,9 +25,9 @@ interface OrganizationInterface extends VisibleInterface
     /**
      * Return TRUE if this and other organization are equal.
      *
-     * @param OrganizationInterface $other The other organization
+     * @param GroupInterface $other The other organization
      *
      * @return bool TRUE if this and other organization are equal
      */
-    public function equal(OrganizationInterface $other): bool;
+    public function equal(GroupInterface $other): bool;
 }

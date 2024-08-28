@@ -6,5 +6,5 @@ namespace App\Core\Domain\Model;
 
 interface UnitInterface
 {
-    public function getGroup(): ?OrganizationInterface;
+    public function getGroup(): ?GroupInterface;
 }

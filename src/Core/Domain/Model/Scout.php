@@ -9,18 +9,17 @@ use Symfony\Component\Uid\UuidV4;
 #[ORM\Entity(repositoryClass: ScoutRepository::class)]
 class Scout extends Person
 {
-    #[ORM\ManyToOne(inversedBy: 'scouts')]
+    #[ORM\ManyToOne]
     private ?Profile $parent1Profile = null;
 
-    #[ORM\ManyToOne(inversedBy: 'scouts')]
+    #[ORM\ManyToOne]
     private ?Profile $parent2Profile = null;
 
-    #[ORM\ManyToOne(inversedBy: 'scouts')]
+    #[ORM\ManyToOne]
     private ?Profile $ownProfile = null;
 
     public function __construct()
     {
-        parent::__construct();
         $this->id = new UuidV4();
     }
 

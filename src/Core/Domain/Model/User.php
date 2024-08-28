@@ -40,6 +40,9 @@ class User implements UserInterface
     #[Column(type: 'string', length: 255)]
     private string $surname;
 
+    #[Column(type: 'string', length: 16)]
+    private string $fiscalCode;
+
     /**
      * @var string The hashed password
      */
@@ -49,7 +52,7 @@ class User implements UserInterface
     /**
      * @var Collection<int, Person>
      */
-    #[ManyToMany(targetEntity: Person::class, inversedBy: 'users')]
+    #[ManyToMany(targetEntity: Person::class)]
     private Collection $managedPersons;
 
     /**
@@ -59,13 +62,15 @@ class User implements UserInterface
         EmailInterface $email,
         string $password,
         string $name,
-        string $surname
+        string $surname,
+        string $fiscalCode
     ) {
         $this->id = new UuidV4();
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
         $this->surname = $surname;
+        $this->fiscalCode = $fiscalCode;
         $this->managedPersons = new ArrayCollection();
     }
 
@@ -97,9 +102,9 @@ class User implements UserInterface
         return $this->surname;
     }
 
-    public function isVerified(): bool
+    public function getFiscalCode(): string
     {
-        return $this->getEmail()->isVerified();
+        return $this->surname;
     }
 
     /**
@@ -123,17 +128,6 @@ class User implements UserInterface
             substr($this->getName(), 0, 1)
             .
             substr($this->getSurname(), 0, 1);
-    }
-
-    public function verifyEmail(): self
-    {
-        $verified_email = $this->email->verified();
-        $this->email = $verified_email;
-
-        // Ensure that user is not marked as deleted when the mail is valid.
-        $this->setDeletedAt(null);
-
-        return $this;
     }
 
     /**

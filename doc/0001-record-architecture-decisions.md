@@ -1,16 +1,16 @@
-# 1. Record architecture decisions
+# 1. Registro delle decisioni di architettura
 
 Date: 2024-08-28
 
-## Status
+## Stato
 
-Accepted
+Accettato
 
-## Context
+## Contesto
 
 Creazione di una web-app per la gestione dei dati delle schede mediche degli educandi scout.
 
-## Decision
+## Decisione
 
 Lo schema delle entità e delle relative relazioni è illustrato qui di seguito.
 
@@ -86,6 +86,6 @@ erDiagram
     }
 ```
 
-## Consequences
+## Conseguenze
 
 Questo ha portato alla generazione delle varie entità di cui è composta l'applicazione.

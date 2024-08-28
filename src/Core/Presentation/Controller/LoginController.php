@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace App\Core\Presentation\Controller;
 
 use App\Core\Domain\Model\UserInterface;
+use App\Core\Presentation\Form\ChangePasswordFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -15,6 +19,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {}
+
     #[Route('/login', name: 'app_login')]
     public function login(
         AuthenticationUtils $authenticationUtils
@@ -24,7 +32,7 @@ class LoginController extends AbstractController
             assert($user instanceof UserInterface);
 
             return $this->redirectToRoute(
-                'app_user_profile',
+                $user->isFirstLogin() ? 'app_user_choose_password' : 'app_user_profile',
                 ['id' => $user->getId()]
             );
         }
@@ -60,6 +68,39 @@ class LoginController extends AbstractController
             'user/auth/login.html.twig',
             ['last_username' => $lastUsername, 'error' => $error]
         );
+    }
+
+    #[Route('/login_choose_password', name: 'app_user_choose_password')]
+    public function loginChoosePassword(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        /** @var null|UserInterface $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        if (!$user->isFirstLogin()) {
+            return $this->redirectToRoute('app_user_profile', ['id' => $user->getId()]);
+        }
+
+        $form = $this->createForm(ChangePasswordFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Encode(hash) the plain password, and set it.
+            $encodedPassword = $passwordHasher->hashPassword(
+                $user,
+                $form->get('plainPassword')->getData()
+            );
+
+            $user->updatePassword($encodedPassword);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_user_profile', ['id' => $user->getId()]);
+        }
+
+        return $this->render('reset_password/reset.html.twig', [
+            'resetForm' => $form,
+        ]);
     }
 
     #[Route('/logout', name: 'app_logout')]

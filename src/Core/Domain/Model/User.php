@@ -17,10 +17,8 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[Entity]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class User implements UserInterface
 {
     use TimestampableEntity;
@@ -34,14 +32,8 @@ class User implements UserInterface
     #[Embedded(class: 'App\Core\Domain\Model\UniqueEmail', columnPrefix: 'email_')]
     private EmailInterface $email;
 
-    #[Column(type: 'string', length: 255)]
-    private string $name;
-
-    #[Column(type: 'string', length: 255)]
-    private string $surname;
-
-    #[Column(type: 'string', length: 16)]
-    private string $fiscalCode;
+    #[Column(type: 'boolean')]
+    private bool $isFirstLogin;
 
     /**
      * @var string The hashed password
@@ -61,27 +53,17 @@ class User implements UserInterface
     public function __construct(
         EmailInterface $email,
         string $password,
-        string $name,
-        string $surname,
-        string $fiscalCode
     ) {
         $this->id = new UuidV4();
+        $this->isFirstLogin = true;
+        $this->managedPersons = new ArrayCollection();
         $this->email = $email;
         $this->password = $password;
-        $this->name = $name;
-        $this->surname = $surname;
-        $this->fiscalCode = $fiscalCode;
-        $this->managedPersons = new ArrayCollection();
     }
 
     public function getId(): UuidV4
     {
         return $this->id;
-    }
-
-    public function getEmail(): EmailInterface
-    {
-        return $this->email;
     }
 
     /**
@@ -92,60 +74,24 @@ class User implements UserInterface
         return $this->password;
     }
 
-    public function getName(): string
+    public function getEmail(): EmailInterface
     {
-        return $this->name;
-    }
-
-    public function getSurname(): string
-    {
-        return $this->surname;
-    }
-
-    public function getFiscalCode(): string
-    {
-        return $this->surname;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
-    {
-        return $this->getName().' '.$this->getSurname();
+        return $this->email;
     }
 
     public function getUserIdentifier(): string
     {
-        return $this->getUsername();
+        return $this->getEmail()->getAddress();
     }
 
     public function getInitials(): string
     {
-        return
-            substr($this->getName(), 0, 1)
-            .
-            substr($this->getSurname(), 0, 1);
+        return substr($this->getUserIdentifier(), 0, 1);
     }
 
-    /**
-     * @return $this
-     */
-    public function update(
-        EmailInterface $email,
-        string $name,
-        string $surname,
-    ): self {
-        if (!$this->email->equal($email)) {
-            $this->email = $email;
-        }
-
-        $this->name = $name;
-        $this->surname = $surname;
-
-        return $this;
+    public function isFirstLogin(): bool
+    {
+        return $this->isFirstLogin;
     }
 
     public function updatePassword(string $password): self
@@ -153,11 +99,6 @@ class User implements UserInterface
         $this->password = $password;
 
         return $this;
-    }
-
-    public function equal(UserInterface $other): bool
-    {
-        return $this->email->getAddress() == $other->getEmail()->getAddress();
     }
 
     /**

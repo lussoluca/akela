@@ -7,16 +7,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 trait TimestampableEntity
 {
-    /**
-     * @Gedmo\Timestampable(on="create")
-     */
     #[Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     protected \DateTime $createdAt;
 
-    /**
-     * @Gedmo\Timestampable(on="update")
-     */
     #[Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     protected \DateTime $updatedAt;
 
     public function setCreatedAt(\DateTime $createdAt): self

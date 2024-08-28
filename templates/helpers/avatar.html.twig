@@ -1,0 +1,17 @@
+{% macro avatar(user) %}
+<span class="inline-flex justify-center items-center w-9 h-9 bg-white rounded-full">
+    <span class="font-medium leading-none text-blue-500">{{ user.initials() }}</span>
+</span>
+{% endmacro %}
+
+{% macro avatar_history(user) %}
+<span class="flex justify-center items-center w-10 h-10 bg-gray-100 rounded-full ring-8 ring-white">
+    <span class="font-medium leading-none text-blue-500">{{ user.initials() }}</span>
+</span>
+{% endmacro %}
+
+{% macro avatar_history_system() %}
+    <span class="flex justify-center items-center w-10 h-10 bg-gray-100 rounded-full ring-8 ring-white">
+    <span class="font-medium leading-none text-blue-500">SY</span>
+</span>
+{% endmacro %}

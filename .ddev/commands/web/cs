@@ -1,0 +1,7 @@
+#!/bin/bash
+
+composer install --working-dir=tools/phpstan
+composer install --working-dir=tools/php-cs-fixer
+tools/php-cs-fixer/vendor/bin/php-cs-fixer fix
+tools/phpstan/vendor/bin/phpstan
+

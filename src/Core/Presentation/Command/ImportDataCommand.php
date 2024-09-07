@@ -26,9 +26,8 @@ class ImportDataCommand extends Command
 
     public function __construct(
         private MessageBusInterface $messageBus,
-        private LoggerInterface     $logger,
-    )
-    {
+        private LoggerInterface $logger,
+    ) {
         parent::__construct();
     }
 
@@ -48,7 +47,7 @@ class ImportDataCommand extends Command
     {
         try {
             $fileToImport = $input->getArgument('fileToImport');
-            $this->io->info('File to import set to: ' . $fileToImport);
+            $this->io->info('File to import set to: '.$fileToImport);
             $this->messageBus->dispatch(new ImportData($fileToImport));
             $this->io->info('Dispatched ImportData command');
         } catch (ExceptionInterface $e) {

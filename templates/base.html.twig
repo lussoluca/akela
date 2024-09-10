@@ -1,3 +1,6 @@
+{% import "helpers/heroicon.html.twig" as heroicon %}
+{% import "helpers/flashes.html.twig" as flashes %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +15,8 @@
         {% endblock %}
     </head>
     <body>
+        {{ flashes.print(app.flashes) }}
+
         {% block body %}{% endblock %}
     </body>
 </html>

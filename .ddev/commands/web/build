@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## Description: Build the website.
+## Usage: build
+
+composer install
+console tailwind:build
+console doctrine:migrations:migrate --no-interaction
+console cache:clear

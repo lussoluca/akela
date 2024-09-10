@@ -3,7 +3,6 @@
 * Clona il repository
 * Installa DDEV
 * Esegui `ddev start`
-* Entra nel container con `ddev ssh`
-* Da dentro al container esegui `composer install`
-* Da dentro al container esegui `console tailwind:build --watch`
-  
+* Esegui `ddev build`
+
+Per eseguire in locale i tool di CS, puoi usare `ddev cs`

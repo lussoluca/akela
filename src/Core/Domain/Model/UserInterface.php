@@ -19,31 +19,14 @@ interface UserInterface extends SymfonyUserInterface, PasswordAuthenticatedUserI
 
     public function getPassword(): ?string;
 
-    public function getName(): string;
-
-    public function getSurname(): string;
-
     public function getInitials(): string;
+
+    public function isFirstLogin(): bool;
 
     /**
      * @phpstan-ignore-next-line
      */
     public function isDeleted();
 
-    public function update(
-        EmailInterface $email,
-        string $name,
-        string $surname,
-    ): self;
-
     public function updatePassword(string $password): self;
-
-    /**
-     * Return TRUE if this and other user are equal.
-     *
-     * @param UserInterface $other The other user
-     *
-     * @return bool TRUE if this and other user are equal
-     */
-    public function equal(UserInterface $other): bool;
 }

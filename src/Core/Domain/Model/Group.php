@@ -46,7 +46,8 @@ class Group implements GroupInterface
     public function __construct(
         string $name,
         string $description,
-    ) {
+    )
+    {
         $this->id = new UuidV4();
         $this->name = $name;
         $this->description = $description;
@@ -71,7 +72,8 @@ class Group implements GroupInterface
     public function update(
         string $name,
         string $description,
-    ): self {
+    ): self
+    {
         $this->name = $name;
         $this->description = $description;
 

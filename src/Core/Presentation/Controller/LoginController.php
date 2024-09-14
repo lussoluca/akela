@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core\Presentation\Controller;
 
+use App\Core\Domain\Model\Group;
+use App\Core\Domain\Model\Profile;
 use App\Core\Domain\Model\UserInterface;
 use App\Core\Presentation\Form\ChangePasswordFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,6 +13,8 @@ use Psr\Log\LogLevel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Core\Infrastructure\Persistence\Repository\GroupRepository;
+use App\Core\Infrastructure\Persistence\Repository\ProfileRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;

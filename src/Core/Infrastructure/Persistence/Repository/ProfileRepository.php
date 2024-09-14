@@ -1,18 +1,62 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Core\Infrastructure\Persistence\Repository;
 
 use App\Core\Domain\Model\Profile;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * @extends ServiceEntityRepository<Profile>
- */
-class ProfileRepository extends ServiceEntityRepository
+class ProfileRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @var \Doctrine\ORM\EntityRepository<Profile>
+     */
+    private EntityRepository $objectRepository;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        parent::__construct($registry, Profile::class);
+        $this->entityManager = $entityManager;
+
+        $repository = $this->entityManager->getRepository(Profile::class);
+        assert($repository instanceof EntityRepository);
+        $this->objectRepository = $repository;
+    }
+
+    public function all(): array
+    {
+        return $this->objectRepository->findAll();
+    }
+
+    public function find(string $id, bool $allowDeleted = false): ?Profile
+    {
+        if ($allowDeleted && $this->entityManager->getFilters()->isEnabled('softdeleteable')) {
+            $this->entityManager->getFilters()->disable('softdeleteable');
+        }
+
+        return $this->objectRepository->find($id);
+    }
+
+    public function add(Profile $profile): void
+    {
+        $this->entityManager->persist($profile);
+        $this->entityManager->flush();
+    }
+
+    public function delete(Profile $user): void
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+    }
+
+    public function count(): int
+    {
+        return intval($this->objectRepository->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult());
     }
 }

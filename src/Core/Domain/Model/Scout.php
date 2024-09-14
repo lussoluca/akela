@@ -4,11 +4,15 @@ namespace App\Core\Domain\Model;
 
 use App\Core\Infrastructure\Persistence\Repository\ScoutRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
 use Symfony\Component\Uid\UuidV4;
 
 #[ORM\Entity(repositoryClass: ScoutRepository::class)]
 class Scout extends Person
 {
+    #[Column(type: 'boolean')]
+    private bool $isAdult;
+
     #[ORM\ManyToOne]
     private ?Profile $parent1Profile = null;
 
@@ -21,6 +25,18 @@ class Scout extends Person
     public function __construct()
     {
         $this->id = new UuidV4();
+    }
+
+    public function isAdult(): ?bool
+    {
+        return $this->isAdult;
+    }
+
+    public function setIsAdult(bool $isAdult): static
+    {
+        $this->isAdult = $isAdult;
+
+        return $this;
     }
 
     public function getParent1Profile(): ?Profile

@@ -16,24 +16,22 @@ doctrine:
     naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
     auto_mapping: true
     mappings:
-      App:
-        type: attribute
-        is_bundle: false
-        dir: '%kernel.project_dir%/src'
-        prefix: 'App'
-        alias: App
       Core:
-        is_bundle: false
         type: attribute
+        is_bundle: false
         dir: '%kernel.project_dir%/src/Core/Domain/Model'
         prefix: 'App\Core'
         alias: Core
       Medical:
-        is_bundle: false
         type: attribute
+        is_bundle: false
         dir: '%kernel.project_dir%/src/Medical/Domain/Model'
         prefix: 'App\Medical'
         alias: Medical
+    filters:
+      softdeleteable:
+        class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+        enabled: true
     controller_resolver:
       auto_mapping: false
 

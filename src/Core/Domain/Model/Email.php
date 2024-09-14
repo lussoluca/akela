@@ -6,15 +6,13 @@ namespace App\Core\Domain\Model;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;
+use Symfony\Component\Mime\Address;
 
 #[Embeddable]
 class Email implements EmailInterface, \Stringable
 {
     #[Column(type: 'string', length: 180, unique: false)]
     protected string $address;
-
-    #[Column(name: 'verified', type: 'boolean')]
-    protected bool $verified = false;
 
     /**
      * Email constructor.
@@ -34,17 +32,9 @@ class Email implements EmailInterface, \Stringable
         return $this->address;
     }
 
-    public function isVerified(): bool
+    public function toAddress(): Address
     {
-        return $this->verified;
-    }
-
-    public function verified(): self
-    {
-        $new_email = clone $this;
-        $new_email->verified = true;
-
-        return $new_email;
+        return new Address($this->getAddress());
     }
 
     public function equal(EmailInterface $other): bool

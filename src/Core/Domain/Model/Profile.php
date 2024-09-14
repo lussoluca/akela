@@ -12,12 +12,8 @@ use Doctrine\ORM\Mapping\Id;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
-/**
- * Class Leader.
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Profile
 {
     use TimestampableEntity;

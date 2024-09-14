@@ -16,12 +16,8 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
-/**
- * Class Group.
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[Entity]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Group implements GroupInterface
 {
     use TimestampableEntity;
@@ -50,7 +46,8 @@ class Group implements GroupInterface
     public function __construct(
         string $name,
         string $description,
-    ) {
+    )
+    {
         $this->id = new UuidV4();
         $this->name = $name;
         $this->description = $description;
@@ -75,7 +72,8 @@ class Group implements GroupInterface
     public function update(
         string $name,
         string $description,
-    ): self {
+    ): self
+    {
         $this->name = $name;
         $this->description = $description;
 

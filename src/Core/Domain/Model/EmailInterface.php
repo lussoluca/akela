@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model;
 
+use Symfony\Component\Mime\Address;
+
 /**
  * Interface EmailInterface.
  */
@@ -11,14 +13,7 @@ interface EmailInterface
 {
     public function getAddress(): string;
 
-    public function isVerified(): bool;
-
-    /**
-     * Create a new version of this email that is verified.
-     *
-     * @return $this
-     */
-    public function verified(): self;
+    public function toAddress(): Address;
 
     /**
      * Return TRUE if this and other email are equal.

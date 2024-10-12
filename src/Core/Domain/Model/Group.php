@@ -10,13 +10,14 @@ use App\Core\Domain\Model\Traits\TimestampableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
-#[Entity]
+#[ORM\Entity]
+#[ORM\Table(name: 'groups')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Group implements GroupInterface
 {

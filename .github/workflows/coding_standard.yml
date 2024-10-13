@@ -42,4 +42,6 @@ jobs:
 
       - name: PHPUnit
         run: |
+          console doctrine:database:create --env=test
+          console doctrine:schema:update --env=test --force
           bin/phpunit

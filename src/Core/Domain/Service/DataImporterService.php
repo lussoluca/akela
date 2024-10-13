@@ -26,7 +26,7 @@ class DataImporterService
     {
         $fileSystem = new Filesystem();
         if (!$fileSystem->exists([$fileToImportPath])) {
-            throw new \Exception('File not found: ' . $fileToImportPath);
+            throw new \Exception('File not found: '.$fileToImportPath);
         }
 
         $reader = new Reader();
@@ -47,8 +47,9 @@ class DataImporterService
             // only read data from "summary" sheet
             $i = 0;
             foreach ($sheet->getRowIterator() as $row) {
-                if ($i == 0) {
-                    $i++;
+                if (0 == $i) {
+                    ++$i;
+
                     continue;
                 }
 

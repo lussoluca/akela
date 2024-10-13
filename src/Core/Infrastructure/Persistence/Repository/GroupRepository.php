@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Core\Infrastructure\Persistence\Repository;
 
-use App\Core\Domain\Model\Profile;
 use App\Core\Domain\Exception\UserNotFoundException;
 use App\Core\Domain\Model\Group;
 use Doctrine\ORM\EntityManagerInterface;

@@ -22,7 +22,6 @@ use Symfony\Component\Uid\UuidV4;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Group implements GroupInterface
 {
-
     use TimestampableEntity;
     use SoftDeleteableEntity;
     use CollectionsTrait;
@@ -53,11 +52,11 @@ class Group implements GroupInterface
      * Group constructor.
      */
     public function __construct(
-      string $name,
-      string $codiceOrdinale,
-      string $iban,
-      Address $address,
-      ?UuidV4 $id = null,
+        string $name,
+        string $codiceOrdinale,
+        string $iban,
+        Address $address,
+        ?UuidV4 $id = null,
     ) {
         $this->id = $id ?: new UuidV4();
         $this->name = $name;
@@ -98,10 +97,10 @@ class Group implements GroupInterface
     }
 
     public function update(
-      string $name,
-      string $codiceOrdinale,
-      string $iban,
-      Address $address,
+        string $name,
+        string $codiceOrdinale,
+        string $iban,
+        Address $address,
     ): self {
         $this->name = $name;
         $this->codiceOrdinale = $codiceOrdinale;
@@ -115,5 +114,4 @@ class Group implements GroupInterface
     {
         return $this->getId() === $other->getId();
     }
-
 }

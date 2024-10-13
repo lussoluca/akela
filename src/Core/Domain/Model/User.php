@@ -52,9 +52,8 @@ class User implements UserInterface
      */
     public function __construct(
         EmailInterface $email,
-        string         $password,
-    )
-    {
+        string $password,
+    ) {
         $this->id = new UuidV4();
         $this->isFirstLogin = true;
         $this->managedPersons = new ArrayCollection();

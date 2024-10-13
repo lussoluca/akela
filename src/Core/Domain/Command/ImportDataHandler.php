@@ -13,10 +13,8 @@ class ImportDataHandler
 {
     public function __construct(
         private DataImporterService $dataImportService,
-        private LoggerInterface     $logger,
-    )
-    {
-    }
+        private LoggerInterface $logger,
+    ) {}
 
     public function __invoke(ImportData $Import): void
     {

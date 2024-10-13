@@ -11,7 +11,6 @@ use Symfony\Component\Uid\UuidV4;
  */
 interface GroupInterface
 {
-
     public function getId(): UuidV4;
 
     public function getName(): string;
@@ -25,10 +24,10 @@ interface GroupInterface
     public function getUnits();
 
     public function update(
-      string $name,
-      string $codiceOrdinale,
-      string $iban,
-      Address $address,
+        string $name,
+        string $codiceOrdinale,
+        string $iban,
+        Address $address,
     ): self;
 
     /**
@@ -39,5 +38,4 @@ interface GroupInterface
      * @return bool TRUE if this and other group are equal
      */
     public function equal(GroupInterface $other): bool;
-
 }

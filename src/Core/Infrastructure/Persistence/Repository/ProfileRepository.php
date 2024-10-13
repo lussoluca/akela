@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Core\Infrastructure\Persistence\Repository;
 
 use App\Core\Domain\Model\Profile;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
 class ProfileRepository
 {

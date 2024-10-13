@@ -10,6 +10,7 @@
     "ext-ctype": "*",
     "ext-iconv": "*",
     "beberlei/assert": "^3.3",
+    "commerceguys/addressing": "^2.2",
     "doctrine/dbal": "^4.2",
     "doctrine/doctrine-bundle": "^2.13",
     "doctrine/doctrine-migrations-bundle": "^3.3",

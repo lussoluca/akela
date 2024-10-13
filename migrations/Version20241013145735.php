@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241012114145 extends AbstractMigration
+final class Version20241013145735 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,7 @@ final class Version20241012114145 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE groups (id BINARY(16) NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('CREATE TABLE groups (id BINARY(16) NOT NULL, name VARCHAR(255) NOT NULL, codice_ordinale VARCHAR(5) NOT NULL, iban VARCHAR(27) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, address_country_code VARCHAR(3) NOT NULL, address_administrative_area VARCHAR(32) NOT NULL, address_locality VARCHAR(256) DEFAULT NULL, address_dependent_locality VARCHAR(256) DEFAULT NULL, address_postal_code VARCHAR(5) DEFAULT NULL, address_address_line1 VARCHAR(256) DEFAULT NULL, address_address_line2 VARCHAR(256) DEFAULT NULL, address_locale VARCHAR(2) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('CREATE TABLE medical_data (id BINARY(16) NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, deleted_at DATETIME DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('CREATE TABLE person (id BINARY(16) NOT NULL, medical_data_id BINARY(16) DEFAULT NULL, discr VARCHAR(255) NOT NULL, created_at DATETIME DEFAULT NULL, updated_at DATETIME DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, profile_id BINARY(16) DEFAULT NULL, is_adult TINYINT(1) DEFAULT NULL, parent1_profile_id BINARY(16) DEFAULT NULL, parent2_profile_id BINARY(16) DEFAULT NULL, own_profile_id BINARY(16) DEFAULT NULL, INDEX IDX_34DCD17671F741F2 (medical_data_id), INDEX IDX_34DCD176CCFA12B8 (profile_id), INDEX IDX_34DCD1765FE4FA6 (parent1_profile_id), INDEX IDX_34DCD17672609D56 (parent2_profile_id), INDEX IDX_34DCD176C920D4FE (own_profile_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('CREATE TABLE leader_role_in_unit (leader_id BINARY(16) NOT NULL, role_in_unit_id BINARY(16) NOT NULL, INDEX IDX_2E1589A973154ED4 (leader_id), INDEX IDX_2E1589A93C3A39CF (role_in_unit_id), PRIMARY KEY(leader_id, role_in_unit_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');

@@ -45,21 +45,24 @@ class DataImporterService
 
         foreach ($reader->getSheetIterator() as $sheet) {
             // only read data from "summary" sheet
+            $i = 0;
             foreach ($sheet->getRowIterator() as $row) {
+                if ($i == 0) {
+                    $i++;
+                    continue;
+                }
+
                 $rowData = [];
-                $firstCell = true;
                 foreach ($row->getCells() as $cell) {
                     $value = $cell->getValue();
-                    if ($firstCell && !is_numeric($value)) {
-                        break;
-                    }
+
                     $rowData[] = $value;
-                    $firstCell = false;
                 }
                 if (!empty($rowData) && self::EXECL_WORKSHEET_GROUPS === $sheet->getName()) {
                     $groups[$rowData[0]] = $rowData;
                 }
             }
+
             if (!$groupsProcessed) {
                 // @var array<array<int, string>> $groups
                 $this->groupImporterService->processGroups($groups);

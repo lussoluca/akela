@@ -26,6 +26,9 @@ class ProfileRepository
         $this->objectRepository = $repository;
     }
 
+    /**
+     * @return \App\Core\Domain\Model\Profile[]
+     */
     public function all(): array
     {
         return $this->objectRepository->findAll();

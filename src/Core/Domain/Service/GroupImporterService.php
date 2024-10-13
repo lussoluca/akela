@@ -14,29 +14,26 @@ class GroupImporterService
     ) {}
 
     /**
-     * @param array<array<int, string>> $groups
+     * @param array<int, array<int, bool|int|string>> $groups
      */
-    public function processGroups(array $groups): array
+    public function processGroups(array $groups): void
     {
-        foreach ($groups as $internalId => $rowData) {
+        foreach ($groups as $rowData) {
             $group = new Group(
-                name          : $rowData[1],
-                codiceOrdinale: $rowData[2],
-                iban          : $rowData[3],
+                name          : (string) $rowData[1],
+                codiceOrdinale: (string) $rowData[2],
+                iban          : (string) $rowData[3],
                 address       : new Address(
                     countryCode: 'IT',
-                    administrativeArea: $rowData[7],
-                    locality: $rowData[5],
+                    administrativeArea: (string) $rowData[7],
+                    locality: (string) $rowData[5],
                     postalCode: (string) $rowData[6],
-                    addressLine1: $rowData[4],
+                    addressLine1: (string) $rowData[4],
                     locale: 'it'
                 ),
-                id            : new UuidV4($rowData[0])
+                id            : new UuidV4((string) $rowData[0])
             );
             $this->groupRepository->add($group);
-            array_unshift($groups[$internalId], $groups[$internalId]);
         }
-
-        return $groups;
     }
 }

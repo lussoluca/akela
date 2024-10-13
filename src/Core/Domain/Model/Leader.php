@@ -4,14 +4,13 @@ namespace App\Core\Domain\Model;
 
 use App\Core\Domain\Model\Traits\SoftDeleteableEntity;
 use App\Core\Domain\Model\Traits\TimestampableEntity;
-use App\Core\Infrastructure\Persistence\Repository\LeaderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
-#[ORM\Entity(repositoryClass: LeaderRepository::class)]
+#[ORM\Entity]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Leader extends Person
 {

@@ -5,14 +5,13 @@ namespace App\Core\Domain\Model;
 use App\Core\Domain\Model\Enum\Gender;
 use App\Core\Domain\Model\Traits\SoftDeleteableEntity;
 use App\Core\Domain\Model\Traits\TimestampableEntity;
-use App\Core\Infrastructure\Persistence\Repository\ProfileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
-#[ORM\Entity(repositoryClass: ProfileRepository::class)]
+#[ORM\Entity]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Profile
 {

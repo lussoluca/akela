@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Uid\UuidV4;
 
 /**
@@ -21,7 +22,10 @@ interface GroupInterface
 
     public function getAddress(): Address;
 
-    public function getUnits();
+    /**
+     * @return \Doctrine\Common\Collections\Collection<int,\App\Core\Domain\Model\Unit>
+     */
+    public function getUnits(): Collection;
 
     public function update(
         string $name,

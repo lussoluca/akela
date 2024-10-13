@@ -55,17 +55,17 @@ class DataImporterService
 
                 $rowData = [];
                 foreach ($row->getCells() as $cell) {
+                    /** @var bool|int|string $value */
                     $value = $cell->getValue();
 
                     $rowData[] = $value;
                 }
                 if (!empty($rowData) && self::EXECL_WORKSHEET_GROUPS === $sheet->getName()) {
-                    $groups[$rowData[0]] = $rowData;
+                    $groups[] = $rowData;
                 }
             }
 
             if (!$groupsProcessed) {
-                // @var array<array<int, string>> $groups
                 $this->groupImporterService->processGroups($groups);
                 $groupsProcessed = true;
             }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "baf8529760f9fdcc72d1a6f0a5ff32bb",
+    "content-hash": "def26725b1ec8ff1a54b98570264afb4",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1774,6 +1774,48 @@
                 }
             ],
             "time": "2024-10-07T22:30:27+00:00"
+        },
+        {
+            "name": "jetbrains/phpstorm-attributes",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JetBrains/phpstorm-attributes.git",
+                "reference": "22fb28d679deceedba8366dbae65cc8ebfc17e26"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-attributes/zipball/22fb28d679deceedba8366dbae65cc8ebfc17e26",
+                "reference": "22fb28d679deceedba8366dbae65cc8ebfc17e26",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JetBrains\\PhpStorm\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "JetBrains",
+                    "homepage": "https://www.jetbrains.com"
+                }
+            ],
+            "description": "PhpStorm specific attributes",
+            "keywords": [
+                "attributes",
+                "jetbrains",
+                "phpstorm"
+            ],
+            "support": {
+                "issues": "https://youtrack.jetbrains.com/newIssue?project=WI",
+                "source": "https://github.com/JetBrains/phpstorm-attributes/tree/1.1"
+            },
+            "time": "2023-09-01T08:50:25+00:00"
         },
         {
             "name": "monolog/monolog",

@@ -54,6 +54,10 @@ jobs:
           composer install --working-dir=tools/php-cs-fixer
           tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation
 
+      - name: "Setup environment"
+        run: |
+          .github/scripts/setup-environment.sh
+
       - name: PHPUnit
         run: |
           console doctrine:database:create --env=test

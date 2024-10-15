@@ -56,4 +56,10 @@ class UnitRepository
 
         return $this->objectRepository->find($id);
     }
+
+    public function add(Unit $unit): void
+    {
+        $this->entityManager->persist($unit);
+        $this->entityManager->flush();
+    }
 }

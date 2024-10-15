@@ -16,9 +16,9 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'app:group:create',
-    description: 'Crete a new group.',
-    aliases: ['app:create:group']
+    name: 'app:import:data',
+    description: 'Import scout data from an excel file',
+    aliases: ['app:data:import']
 )]
 class ImportDataCommand extends Command
 {

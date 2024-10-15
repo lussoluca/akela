@@ -27,7 +27,7 @@ class Unit implements UnitInterface
     #[Column(type: 'string', length: 255)]
     private string $name;
 
-    #[ManyToOne(targetEntity: 'App\Core\Domain\Model\Group', inversedBy: 'units')]
+    #[ManyToOne(targetEntity: Group::class, inversedBy: 'units')]
     #[JoinColumn(name: 'group_id', referencedColumnName: 'id')]
     private GroupInterface $group;
 
@@ -36,11 +36,14 @@ class Unit implements UnitInterface
 
     public function __construct(
         string $name,
+        UnitType $type,
         GroupInterface $group,
+        ?UuidV4 $id = null,
     ) {
-        $this->id = new UuidV4();
         $this->name = $name;
         $this->group = $group;
+        $this->type = $type;
+        $this->id = $id ?: new UuidV4();
     }
 
     public function getGroup(): GroupInterface

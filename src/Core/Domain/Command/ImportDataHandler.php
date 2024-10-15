@@ -19,6 +19,7 @@ class ImportDataHandler
     public function __invoke(ImportData $Import): void
     {
         try {
+            // dd('passo da qui');
             $fileToImportPath = $Import->getFilePath();
             $this->dataImportService->import($fileToImportPath);
         } catch (\Exception $e) {

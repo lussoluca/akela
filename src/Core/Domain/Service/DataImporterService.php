@@ -17,6 +17,7 @@ class DataImporterService
 
     public function __construct(
         private GroupImporterService $groupImporterService,
+        private readonly UnitImporterService $unitImporterService,
     ) {}
 
     /**
@@ -60,14 +61,25 @@ class DataImporterService
 
                     $rowData[] = $value;
                 }
-                if (!empty($rowData) && self::EXECL_WORKSHEET_GROUPS === $sheet->getName()) {
+                if (!empty($rowData) && self::EXECL_WORKSHEET_GROUPS === strtolower($sheet->getName())) {
                     $groups[] = $rowData;
+                }
+                if (!empty($rowData) && self::EXECL_WORKSHEET_UNITS === strtolower($sheet->getName())) {
+                    $units[] = $rowData;
                 }
             }
 
             if (!$groupsProcessed) {
                 $this->groupImporterService->processGroups($groups);
                 $groupsProcessed = true;
+
+                continue;
+            }
+
+            if (!$unitsProcessed) {
+                $this->unitImporterService->processUnits($units);
+                $unitsProcessed = true;
+                // continue;
             }
         }
         $reader->close();

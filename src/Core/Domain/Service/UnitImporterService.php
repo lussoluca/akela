@@ -29,6 +29,11 @@ class UnitImporterService
 
             /** @var GroupInterface $group */
             $group = $this->groupRepository->find((string) $rowData[1]);
+            $unit = $this->unitRepository->find((string) $rowData[0]);
+            if (null !== $unit) {
+                continue;
+            }
+
             $unit = new Unit(
                 name: (string) $rowData[1],
                 type: $type,

@@ -23,7 +23,7 @@ interface GroupInterface
     public function getAddress(): Address;
 
     /**
-     * @return \Doctrine\Common\Collections\Collection<int,\App\Core\Domain\Model\Unit>
+     * @return Collection<int,Unit>
      */
     public function getUnits(): Collection;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Presentation\Command;
 
-use App\Core\Domain\Command\ImportData;
+use App\Core\Domain\Service\DataImporterService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -12,8 +12,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Messenger\Exception\ExceptionInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
     name: 'app:import:data',
@@ -25,7 +23,7 @@ class ImportDataCommand extends Command
     private SymfonyStyle $io;
 
     public function __construct(
-        private MessageBusInterface $messageBus,
+        private DataImporterService $dataImportService,
         private LoggerInterface $logger,
     ) {
         parent::__construct();
@@ -48,10 +46,11 @@ class ImportDataCommand extends Command
         try {
             $fileToImport = $input->getArgument('fileToImport');
             $this->io->info('File to import set to: '.$fileToImport);
-            $this->messageBus->dispatch(new ImportData($fileToImport));
-            $this->io->info('Dispatched ImportData command');
-        } catch (ExceptionInterface $e) {
+            $this->dataImportService->import($fileToImport);
+            $this->io->info('Import complete for file: '.$fileToImport);
+        } catch (\Throwable $e) {
             $this->logger->error($e->getMessage());
+            $this->io->error($e->getMessage().', stacktrace: '.$e->getTraceAsString());
 
             return Command::FAILURE;
         }

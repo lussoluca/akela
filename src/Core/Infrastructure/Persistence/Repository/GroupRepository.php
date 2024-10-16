@@ -66,4 +66,16 @@ class GroupRepository
 
         return $this->objectRepository->findAll();
     }
+
+    public function add(Group $group): void
+    {
+        $this->entityManager->persist($group);
+        $this->entityManager->flush();
+    }
+
+    public function delete(Group $group): void
+    {
+        $this->entityManager->remove($group);
+        $this->entityManager->flush();
+    }
 }

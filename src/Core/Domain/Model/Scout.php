@@ -2,12 +2,11 @@
 
 namespace App\Core\Domain\Model;
 
-use App\Core\Infrastructure\Persistence\Repository\ScoutRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Symfony\Component\Uid\UuidV4;
 
-#[ORM\Entity(repositoryClass: ScoutRepository::class)]
+#[ORM\Entity]
 class Scout extends Person
 {
     #[Column(type: 'boolean')]

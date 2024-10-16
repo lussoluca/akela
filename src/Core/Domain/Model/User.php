@@ -29,7 +29,7 @@ class User implements UserInterface
     #[Column(type: 'uuid')]
     private UuidV4 $id;
 
-    #[Embedded(class: 'App\Core\Domain\Model\UniqueEmail', columnPrefix: 'email_')]
+    #[Embedded(class: UniqueEmail::class, columnPrefix: 'email_')]
     private EmailInterface $email;
 
     #[Column(type: 'boolean')]

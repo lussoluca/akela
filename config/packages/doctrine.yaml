@@ -8,6 +8,7 @@ doctrine:
 
     profiling_collect_backtrace: '%kernel.debug%'
     use_savepoints: true
+    logging: true
   orm:
     auto_generate_proxy_classes: true
     enable_lazy_ghost_objects: true
@@ -22,6 +23,30 @@ doctrine:
         dir: '%kernel.project_dir%/src/Core/Domain/Model'
         prefix: 'App\Core'
         alias: Core
+      Group:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/Core/Domain/Model'
+        prefix: 'App\Core'
+        alias: Group
+      Unit:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/Core/Domain/Model'
+        prefix: 'App\Core'
+        alias: Unit
+      Leader:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/Core/Domain/Model'
+        prefix: 'App\Core'
+        alias: Leader
+      Scout:
+        type: attribute
+        is_bundle: false
+        dir: '%kernel.project_dir%/src/Core/Domain/Model'
+        prefix: 'App\Core'
+        alias: Scout
       Medical:
         type: attribute
         is_bundle: false

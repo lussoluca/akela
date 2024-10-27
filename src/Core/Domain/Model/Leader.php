@@ -4,7 +4,6 @@ namespace App\Core\Domain\Model;
 
 use App\Core\Domain\Model\Traits\SoftDeleteableEntity;
 use App\Core\Domain\Model\Traits\TimestampableEntity;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -20,16 +19,22 @@ class Leader extends Person
     /**
      * @var Collection<int, RoleInUnit> $rolesInUnits
      */
-    #[ORM\ManyToMany(targetEntity: RoleInUnit::class, inversedBy: 'leaders')]
+    #[ORM\ManyToMany(targetEntity: RoleInUnit::class, inversedBy: 'leaders', cascade: ['persist'])]
     private Collection $rolesInUnits;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Profile $profile = null;
 
-    public function __construct()
+    public function __construct(
+        // @var Collection<int, RoleInUnit>
+        Collection $rolesInUnit,
+        ?Profile   $profile = null,
+        ?UuidV4    $id = null,
+    )
     {
-        $this->id = new UuidV4();
-        $this->rolesInUnits = new ArrayCollection();
+        $this->rolesInUnits = $rolesInUnit;
+        $this->profile = $profile;
+        $this->id = $id ?: new UuidV4();
     }
 
     /**

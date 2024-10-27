@@ -22,9 +22,11 @@ class RoleInUnit
     #[ORM\JoinColumn(nullable: false)]
     private ?Unit $unit = null;
 
-    public function __construct()
+    public function __construct(Role $role, Unit $unit, ?UuidV4 $id = null)
     {
-        $this->id = new UuidV4();
+        $this->role = $role;
+        $this->unit = $unit;
+        $this->id = $id ?: new UuidV4();
     }
 
     public function getId(): UuidV4

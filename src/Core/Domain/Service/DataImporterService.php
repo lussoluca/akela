@@ -16,12 +16,11 @@ class DataImporterService
     public const EXECL_WORKSHEET_SCOUTS = 'scout';
 
     public function __construct(
-        private readonly GroupImporterService   $groupImporterService,
-        private readonly UnitImporterService    $unitImporterService,
+        private readonly GroupImporterService $groupImporterService,
+        private readonly UnitImporterService $unitImporterService,
         private readonly ProfileImporterService $profileImporterService,
-    )
-    {
-    }
+        private readonly LeaderImporterService $leaderImporterService,
+    ) {}
 
     /**
      * @throws \Exception
@@ -31,7 +30,7 @@ class DataImporterService
         try {
             $fileSystem = new Filesystem();
             if (!$fileSystem->exists([$fileToImportPath])) {
-                throw new \Exception('File not found: ' . $fileToImportPath);
+                throw new \Exception('File not found: '.$fileToImportPath);
             }
             $reader = new Reader();
             $reader->open($fileToImportPath);
@@ -71,6 +70,9 @@ class DataImporterService
                     if (!empty($rowData) && self::EXECL_WORKSHEET_PROFILES === strtolower($sheet->getName())) {
                         $profiles[] = $rowData;
                     }
+                    if (!empty($rowData) && self::EXECL_WORKSHEET_LEADERS === strtolower($sheet->getName())) {
+                        $leaders[] = $rowData;
+                    }
                 }
 
                 if (!$groupsProcessed) {
@@ -90,12 +92,20 @@ class DataImporterService
                 if (!$profilesProcessed) {
                     $this->profileImporterService->processProfiles($profiles);
                     $profilesProcessed = true;
+
+                    continue;
+                }
+
+                if (!$leadersProcessed) {
+                    $this->leaderImporterService->processLeaders($leaders);
+                    $leadersProcessed = true;
+
                     continue;
                 }
             }
             $reader->close();
         } catch (\Throwable $e) {
-            throw new \Exception('Exception at line ' . $e->getLine() . ' [file: ' . $e->getFile() . '] :' . $e->getMessage(), $e->getCode());
+            throw new \Exception('Exception at line '.$e->getLine().' [file: '.$e->getFile().'] :'.$e->getMessage(), $e->getCode());
         }
     }
 }

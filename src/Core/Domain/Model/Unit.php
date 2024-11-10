@@ -22,17 +22,17 @@ class Unit implements UnitInterface
 
     #[Id]
     #[Column(type: 'uuid')]
-    private UuidV4 $id;
+    protected UuidV4 $id;
 
     #[Column(type: 'string', length: 255)]
-    private string $name;
+    protected string $name;
 
     #[ManyToOne(targetEntity: Group::class, inversedBy: 'units')]
     #[JoinColumn(name: 'group_id', referencedColumnName: 'id')]
-    private GroupInterface $group;
+    protected GroupInterface $group;
 
     #[Column(enumType: UnitType::class)]
-    private ?UnitType $type = null;
+    protected ?UnitType $type = null;
 
     public function __construct(
         string $name,

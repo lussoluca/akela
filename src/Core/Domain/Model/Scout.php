@@ -2,6 +2,8 @@
 
 namespace App\Core\Domain\Model;
 
+use App\Core\Domain\Model\Traits\SoftDeleteableEntity;
+use App\Core\Domain\Model\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
 use Symfony\Component\Uid\UuidV4;
@@ -9,17 +11,20 @@ use Symfony\Component\Uid\UuidV4;
 #[ORM\Entity]
 class Scout extends Person
 {
+    use TimestampableEntity;
+    use SoftDeleteableEntity;
+
     #[Column(type: 'boolean')]
-    private bool $isAdult;
+    protected bool $isAdult;
 
     #[ORM\ManyToOne]
-    private ?Profile $parent1Profile = null;
+    protected ?Profile $parent1Profile = null;
 
     #[ORM\ManyToOne]
-    private ?Profile $parent2Profile = null;
+    protected ?Profile $parent2Profile = null;
 
     #[ORM\ManyToOne]
-    private ?Profile $ownProfile = null;
+    protected ?Profile $ownProfile = null;
 
     public function __construct()
     {

@@ -13,14 +13,14 @@ class RoleInUnit
 {
     #[Id]
     #[Column(type: 'uuid', unique: true)]
-    private UuidV4 $id;
+    protected UuidV4 $id;
 
     #[Column(enumType: Role::class)]
-    private ?Role $role = null;
+    protected ?Role $role = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Unit $unit = null;
+    #[ORM\ManyToOne(targetEntity: Unit::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'unit_id', referencedColumnName: 'id', nullable: false)]
+    protected ?Unit $unit;
 
     public function __construct(Role $role, Unit $unit, ?UuidV4 $id = null)
     {

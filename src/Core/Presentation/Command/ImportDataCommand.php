@@ -37,15 +37,27 @@ class ImportDataCommand extends Command
 
     protected function configure(): void
     {
-        $this->setHelp('This command allows you to create a new group');
-        $this->addArgument('fileToImport', InputArgument::REQUIRED, 'XLSX File to import');
+        $this
+            ->setHelp('This command allows you to create a new group')
+            ->addUsage('php bin/console app:import:data  [options] <xlsxFileToImport>')
+            ->addArgument('fileToImport', InputArgument::REQUIRED, 'XLSX File to import')
+            ->addOption('overwrite', 'o', InputArgument::OPTIONAL, 'Overwrite existing data', false)
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $fileToImport = $input->getArgument('fileToImport');
+            $overwrite = $input->getOption('overwrite');
+            if (null === $overwrite || false === $overwrite) {
+                $overwrite = false;
+            } else {
+                $overwrite = (bool) preg_match('/^((y{1}(es)?)|(s{1}[iì]?)|1)$/iu', $overwrite);
+            }
+
             $this->io->info('File to import set to: '.$fileToImport);
+            $this->dataImportService->overwrite = $overwrite;
             $this->dataImportService->import($fileToImport);
             $this->io->info('Import complete for file: '.$fileToImport);
         } catch (\Throwable $e) {

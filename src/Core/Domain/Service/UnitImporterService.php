@@ -11,6 +11,8 @@ use Symfony\Component\Uid\UuidV4;
 
 class UnitImporterService
 {
+    public bool $overwrite = false;
+
     public function __construct(
         private readonly UnitRepository $unitRepository,
         private readonly GroupRepository $groupRepository

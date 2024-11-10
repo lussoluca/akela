@@ -11,6 +11,8 @@ use Symfony\Component\Uid\UuidV4;
 
 class ProfileImporterService
 {
+    public bool $overwrite = false;
+
     public function __construct(
         private readonly ProfileRepository $profileRepository,
     ) {}

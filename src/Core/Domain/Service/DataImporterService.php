@@ -15,6 +15,8 @@ class DataImporterService
     public const EXECL_WORKSHEET_LEADERS = 'leader';
     public const EXECL_WORKSHEET_SCOUTS = 'scout';
 
+    public bool $overwrite = false;
+
     public function __construct(
         private readonly GroupImporterService $groupImporterService,
         private readonly UnitImporterService $unitImporterService,

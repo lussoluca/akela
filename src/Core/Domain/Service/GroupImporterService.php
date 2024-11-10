@@ -10,6 +10,8 @@ use Symfony\Component\Uid\UuidV4;
 
 class GroupImporterService
 {
+    public bool $overwrite = false;
+
     public function __construct(
         private readonly GroupRepository $groupRepository
     ) {}

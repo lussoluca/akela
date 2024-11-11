@@ -6,23 +6,26 @@ namespace App\Core\Domain\Service;
 
 use OpenSpout\Reader\XLSX\Reader;
 use Symfony\Component\Filesystem\Filesystem;
+use App\Core\Domain\Model\Traits\OverwritableTrait;
 
 class DataImporterService
 {
-    public const EXECL_WORKSHEET_GROUPS = 'gruppo';
-    public const EXECL_WORKSHEET_UNITS = 'unità';
-    public const EXECL_WORKSHEET_PROFILES = 'profili';
-    public const EXECL_WORKSHEET_LEADERS = 'leader';
-    public const EXECL_WORKSHEET_SCOUTS = 'scout';
+    use OverwritableTrait;
 
-    public bool $overwrite = false;
+    public const string EXECL_WORKSHEET_GROUPS = 'gruppo';
+    public const string EXECL_WORKSHEET_UNITS = 'unità';
+    public const string EXECL_WORKSHEET_PROFILES = 'profili';
+    public const string EXECL_WORKSHEET_LEADERS = 'leader';
+    public const string EXECL_WORKSHEET_SCOUTS = 'scout';
 
     public function __construct(
-        private readonly GroupImporterService $groupImporterService,
-        private readonly UnitImporterService $unitImporterService,
+        private readonly GroupImporterService   $groupImporterService,
+        private readonly UnitImporterService    $unitImporterService,
         private readonly ProfileImporterService $profileImporterService,
-        private readonly LeaderImporterService $leaderImporterService,
-    ) {}
+        private readonly LeaderImporterService  $leaderImporterService,
+    )
+    {
+    }
 
     /**
      * @throws \Exception
@@ -32,7 +35,7 @@ class DataImporterService
         try {
             $fileSystem = new Filesystem();
             if (!$fileSystem->exists([$fileToImportPath])) {
-                throw new \Exception('File not found: '.$fileToImportPath);
+                throw new \Exception('File not found: ' . $fileToImportPath);
             }
             $reader = new Reader();
             $reader->open($fileToImportPath);
@@ -78,6 +81,7 @@ class DataImporterService
                 }
 
                 if (!$groupsProcessed) {
+                    $this->groupImporterService->setOverwrite($this->isOverwritable());
                     $this->groupImporterService->processGroups($groups);
                     $groupsProcessed = true;
 
@@ -85,6 +89,7 @@ class DataImporterService
                 }
 
                 if (!$unitsProcessed) {
+                    $this->unitImporterService->setOverwrite($this->isOverwritable());
                     $this->unitImporterService->processUnits($units);
                     $unitsProcessed = true;
 
@@ -92,6 +97,7 @@ class DataImporterService
                 }
 
                 if (!$profilesProcessed) {
+                    $this->profileImporterService->setOverwrite($this->isOverwritable());
                     $this->profileImporterService->processProfiles($profiles);
                     $profilesProcessed = true;
 
@@ -99,6 +105,7 @@ class DataImporterService
                 }
 
                 if (!$leadersProcessed) {
+                    $this->leaderImporterService->setOverwrite($this->isOverwritable());
                     $this->leaderImporterService->processLeaders($leaders);
                     $leadersProcessed = true;
 
@@ -107,7 +114,7 @@ class DataImporterService
             }
             $reader->close();
         } catch (\Throwable $e) {
-            throw new \Exception('Exception at line '.$e->getLine().' [file: '.$e->getFile().'] :'.$e->getMessage(), $e->getCode());
+            throw new \Exception('Exception at line ' . $e->getLine() . ' [file: ' . $e->getFile() . '] :' . $e->getMessage(), $e->getCode());
         }
     }
 }

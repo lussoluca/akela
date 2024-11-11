@@ -5,6 +5,7 @@ namespace App\Core\Domain\Service;
 use App\Core\Domain\Model\Enum\Role;
 use App\Core\Domain\Model\Leader;
 use App\Core\Domain\Model\RoleInUnit;
+use App\Core\Domain\Model\Traits\OverwritableTrait;
 use App\Core\Infrastructure\Persistence\Repository\LeaderRepository;
 use App\Core\Infrastructure\Persistence\Repository\ProfileRepository;
 use App\Core\Infrastructure\Persistence\Repository\UnitRepository;
@@ -13,7 +14,7 @@ use Symfony\Component\Uid\UuidV4;
 
 class LeaderImporterService
 {
-    public bool $overwrite = false;
+    use OverwritableTrait;
 
     public function __construct(
         private readonly LeaderRepository $leaderRepository,

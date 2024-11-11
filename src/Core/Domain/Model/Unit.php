@@ -72,4 +72,14 @@ class Unit implements UnitInterface
 
         return $this;
     }
+
+    public function update(
+        string $name,
+        UnitType $type,
+    ): self {
+        $this->name = $name;
+        $this->type = $type;
+
+        return $this;
+    }
 }

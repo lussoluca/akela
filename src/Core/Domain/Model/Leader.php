@@ -16,20 +16,19 @@ class Leader extends Person
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
-    // @var $rolesInUnits Collection<int, RoleInUnit>
+    // @var Collection<int, RoleInUnit> $rolesInUnits
     #[ORM\ManyToMany(targetEntity: RoleInUnit::class, cascade: ['persist'])]
     protected Collection $rolesInUnits;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     protected ?Profile $profile = null;
 
-    // @param $rolesInUnits Collection<int, RoleInUnit>
     public function __construct(
+        // @param $rolesInUnits \Doctrine\Common\Collections\Collection<int, \App\Core\Domain\Model\RoleInUnit>
         Collection $rolesInUnit,
-        ?Profile   $profile = null,
-        ?UuidV4    $id = null,
-    )
-    {
+        ?Profile $profile = null,
+        ?UuidV4 $id = null,
+    ) {
         $this->rolesInUnits = $rolesInUnit;
         $this->profile = $profile;
         $this->id = $id ?: new UuidV4();

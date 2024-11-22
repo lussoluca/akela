@@ -2,6 +2,8 @@
 
 namespace App\Core\Domain\Service;
 
+use Psr\Log\LoggerInterface;
+use App\Core\Domain\Model\Traits\LoggerUnawareTrait;
 use App\Core\Domain\Exception\ProfileNotFountException;
 use App\Core\Domain\Exception\UnitNotFoundException;
 use App\Core\Domain\Model\Profile;
@@ -15,7 +17,7 @@ use Symfony\Component\Uid\UuidV4;
 
 class ScoutImporterService
 {
-    use OverwritableTrait;
+    use OverwritableTrait, LoggerUnawareTrait;
 
     public function __construct(
         private readonly ScoutRepository   $scoutRepository,
@@ -57,6 +59,7 @@ class ScoutImporterService
 
             if ($this->isOverwritable()) {
                 if (null !== $scout) {
+                    $this->logInfo('Updating scout with id: ' . $rowData[0]);
                     $scout->update($unit, $ownProfile, $isAdult, $profile1, $profile2);
                 } else {
                     $scout = $this->createScout($unit, $ownProfile, $profile1, $profile2, $isAdult, (string)$rowData[0]);
@@ -72,8 +75,9 @@ class ScoutImporterService
         }
     }
 
-    private function createScout(Unit $unit, Profile $ownProfile, Profile $profile1, Profile $profile2, bool $isAdult, string $uuid): Scout
+    private function createScout(Unit $unit, Profile $ownProfile, ?Profile $profile1, ?Profile $profile2, bool $isAdult, string $uuid): Scout
     {
+        $this->logInfo('Creating scout with id: ' . $uuid);
         return new Scout(
             $unit,
             $ownProfile,

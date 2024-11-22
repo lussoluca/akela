@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Service;
 
-use App\Core\Domain\Model\Traits\OverwritableTrait;
 use OpenSpout\Reader\XLSX\Reader;
 use Symfony\Component\Filesystem\Filesystem;
+use App\Core\Domain\Model\Traits\OverwritableTrait;
+use App\Core\Domain\Model\Traits\LoggerUnawareTrait;
 
 class DataImporterService
 {
-    use OverwritableTrait;
+    use OverwritableTrait, LoggerUnawareTrait;
 
     public const string EXECL_WORKSHEET_GROUPS = 'gruppo';
     public const string EXECL_WORKSHEET_UNITS = 'unità';
@@ -23,6 +24,7 @@ class DataImporterService
         private readonly UnitImporterService    $unitImporterService,
         private readonly ProfileImporterService $profileImporterService,
         private readonly LeaderImporterService  $leaderImporterService,
+        private readonly ScoutImporterService   $scoutImporterService,
     )
     {
     }
@@ -33,6 +35,7 @@ class DataImporterService
     public function import(string $fileToImportPath): void
     {
         try {
+            $this->logInfo('Opening file: ' . $fileToImportPath);
             $fileSystem = new Filesystem();
             if (!$fileSystem->exists([$fileToImportPath])) {
                 throw new \Exception('File not found: ' . $fileToImportPath);
@@ -78,10 +81,15 @@ class DataImporterService
                     if (!empty($rowData) && self::EXECL_WORKSHEET_LEADERS === strtolower($sheet->getName())) {
                         $leaders[] = $rowData;
                     }
+                    if (!empty($rowData) && self::EXECL_WORKSHEET_SCOUTS === strtolower($sheet->getName())) {
+                        $scouts[] = $rowData;
+                    }
                 }
 
                 if (!$groupsProcessed) {
+                    $this->logInfo('Processing groups');
                     $this->groupImporterService->setOverwrite($this->isOverwritable());
+                    $this->groupImporterService->setLogger($this->logger);
                     $this->groupImporterService->processGroups($groups);
                     $groupsProcessed = true;
 
@@ -89,7 +97,9 @@ class DataImporterService
                 }
 
                 if (!$unitsProcessed) {
+                    $this->logInfo('Processing units');
                     $this->unitImporterService->setOverwrite($this->isOverwritable());
+                    $this->unitImporterService->setLogger($this->logger);
                     $this->unitImporterService->processUnits($units);
                     $unitsProcessed = true;
 
@@ -97,7 +107,9 @@ class DataImporterService
                 }
 
                 if (!$profilesProcessed) {
+                    $this->logInfo('Processing profiles');
                     $this->profileImporterService->setOverwrite($this->isOverwritable());
+                    $this->profileImporterService->setLogger($this->logger);
                     $this->profileImporterService->processProfiles($profiles);
                     $profilesProcessed = true;
 
@@ -105,13 +117,26 @@ class DataImporterService
                 }
 
                 if (!$leadersProcessed) {
+                    $this->logInfo('Processing leaders');
                     $this->leaderImporterService->setOverwrite($this->isOverwritable());
+                    $this->leaderImporterService->setLogger($this->logger);
                     $this->leaderImporterService->processLeaders($leaders);
                     $leadersProcessed = true;
+
+                    continue;
+                }
+
+                if (!$scoutsProcessed) {
+                    $this->logInfo('Processing scouts');
+                    $this->scoutImporterService->setOverwrite($this->isOverwritable());
+                    $this->scoutImporterService->setLogger($this->logger);
+                    $this->scoutImporterService->processScouts($scouts);
+                    $scoutsProcessed = true;
 
                     // continue;
                 }
             }
+            $this->logInfo('Import complete');
             $reader->close();
         } catch (\Throwable $e) {
             throw new \Exception('Exception at line ' . $e->getLine() . ' [file: ' . $e->getFile() . '] :' . $e->getMessage(), $e->getCode());

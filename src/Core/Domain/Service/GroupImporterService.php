@@ -56,6 +56,9 @@ class GroupImporterService
         }
     }
 
+    /**
+     * @param array<int, bool|int|string> $rowData
+     */
     private function createGroup(array $rowData, string $uuid): Group
     {
         return new Group(

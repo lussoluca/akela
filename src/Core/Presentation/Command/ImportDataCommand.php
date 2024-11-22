@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Core\Presentation\Command;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Command\Command;
 use App\Core\Domain\Service\DataImporterService;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Console\Input\InputArgument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:import:data',
@@ -24,9 +24,8 @@ class ImportDataCommand extends Command
 
     public function __construct(
         private DataImporterService $dataImportService,
-        private LoggerInterface     $logger,
-    )
-    {
+        private LoggerInterface $logger,
+    ) {
         parent::__construct();
     }
 
@@ -42,7 +41,8 @@ class ImportDataCommand extends Command
             ->setHelp('This command allows you to create a new group')
             ->addUsage('php bin/console app:import:data  [options] <xlsxFileToImport>')
             ->addArgument('fileToImport', InputArgument::REQUIRED, 'XLSX File to import')
-            ->addOption('overwrite', 'o', InputArgument::OPTIONAL, 'Overwrite existing data', false);
+            ->addOption('overwrite', 'o', InputArgument::OPTIONAL, 'Overwrite existing data', false)
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -53,16 +53,16 @@ class ImportDataCommand extends Command
             if (null === $overwrite || false === $overwrite) {
                 $overwrite = false;
             } else {
-                $overwrite = (bool)preg_match('/^=?((y{1}(es)?)|(s{1}[iì]?)|1|true|on)$/iu', $overwrite);
+                $overwrite = (bool) preg_match('/^=?((y{1}(es)?)|(s{1}[iì]?)|1|true|on)$/iu', $overwrite);
             }
 
-            $this->io->info('File to import set to: ' . $fileToImport . ', overwrite set to: ' . ($overwrite ? 'true' : 'false'));
+            $this->io->info('File to import set to: '.$fileToImport.', overwrite set to: '.($overwrite ? 'true' : 'false'));
             $this->dataImportService->setOverwrite($overwrite);
             $this->dataImportService->import($fileToImport);
-            $this->io->info('Import complete for file: ' . $fileToImport);
+            $this->io->info('Import complete for file: '.$fileToImport);
         } catch (\Throwable $e) {
             $this->logger->error($e->getMessage());
-            $this->io->error($e->getMessage() . ', stacktrace: ' . $e->getTraceAsString());
+            $this->io->error($e->getMessage().', stacktrace: '.$e->getTraceAsString());
 
             return Command::FAILURE;
         }

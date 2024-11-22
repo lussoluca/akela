@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Service;
 
+use App\Core\Domain\Model\Traits\OverwritableTrait;
 use OpenSpout\Reader\XLSX\Reader;
 use Symfony\Component\Filesystem\Filesystem;
-use App\Core\Domain\Model\Traits\OverwritableTrait;
 
 class DataImporterService
 {
@@ -109,7 +109,7 @@ class DataImporterService
                     $this->leaderImporterService->processLeaders($leaders);
                     $leadersProcessed = true;
 
-                    continue;
+                    // continue;
                 }
             }
             $reader->close();

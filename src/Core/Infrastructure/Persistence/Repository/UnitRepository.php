@@ -42,7 +42,7 @@ class UnitRepository
         $user = $this->objectRepository->find($id);
 
         if (null == $user) {
-            throw new UnitNotFoundException();
+            throw new UnitNotFoundException($id);
         }
 
         return $user;

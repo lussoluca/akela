@@ -14,6 +14,10 @@ class Scout extends Person
     use TimestampableEntity;
     use SoftDeleteableEntity;
 
+    #[ORM\ManyToOne(targetEntity: Unit::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'unit_id', referencedColumnName: 'id', nullable: false)]
+    protected ?Unit $unit;
+
     #[Column(type: 'boolean')]
     protected bool $isAdult;
 
@@ -26,9 +30,36 @@ class Scout extends Person
     #[ORM\ManyToOne]
     protected ?Profile $ownProfile = null;
 
-    public function __construct()
-    {
-        $this->id = new UuidV4();
+    public function __construct(
+        Unit $unit,
+        Profile $ownProfile,
+        bool $isAdult,
+        ?Profile $parent1Profile = null,
+        ?Profile $parent2Profile = null,
+        ?UuidV4 $id = null,
+    ) {
+        $this->unit = $unit;
+        $this->ownProfile = $ownProfile;
+        $this->isAdult = $isAdult;
+        $this->parent1Profile = $parent1Profile;
+        $this->parent2Profile = $parent2Profile;
+        $this->id = $id ?: new UuidV4();
+    }
+
+    public function update(
+        Unit $unit,
+        Profile $ownProfile,
+        bool $isAdult,
+        ?Profile $parent1Profile,
+        ?Profile $parent2Profile,
+    ): static {
+        $this->unit = $unit;
+        $this->ownProfile = $ownProfile;
+        $this->isAdult = $isAdult;
+        $this->parent1Profile = $parent1Profile;
+        $this->parent2Profile = $parent2Profile;
+
+        return $this;
     }
 
     public function isAdult(): ?bool

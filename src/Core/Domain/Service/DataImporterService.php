@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Service;
 
+use App\Core\Domain\Model\Traits\LoggerUnawareTrait;
+use App\Core\Domain\Model\Traits\OverwritableTrait;
 use OpenSpout\Reader\XLSX\Reader;
 use Symfony\Component\Filesystem\Filesystem;
-use App\Core\Domain\Model\Traits\OverwritableTrait;
-use App\Core\Domain\Model\Traits\LoggerUnawareTrait;
 
 class DataImporterService
 {
-    use OverwritableTrait, LoggerUnawareTrait;
+    use OverwritableTrait;
+    use LoggerUnawareTrait;
 
     public const string EXECL_WORKSHEET_GROUPS = 'gruppo';
     public const string EXECL_WORKSHEET_UNITS = 'unità';
@@ -20,14 +21,12 @@ class DataImporterService
     public const string EXECL_WORKSHEET_SCOUTS = 'scout';
 
     public function __construct(
-        private readonly GroupImporterService   $groupImporterService,
-        private readonly UnitImporterService    $unitImporterService,
-        private readonly ProfileImporterService $profileImporterService,
-        private readonly LeaderImporterService  $leaderImporterService,
-        private readonly ScoutImporterService   $scoutImporterService,
-    )
-    {
-    }
+        private GroupImporterService $groupImporterService,
+        private UnitImporterService $unitImporterService,
+        private ProfileImporterService $profileImporterService,
+        private LeaderImporterService $leaderImporterService,
+        private ScoutImporterService $scoutImporterService,
+    ) {}
 
     /**
      * @throws \Exception
@@ -35,10 +34,10 @@ class DataImporterService
     public function import(string $fileToImportPath): void
     {
         try {
-            $this->logInfo('Opening file: ' . $fileToImportPath);
+            $this->logInfo('Opening file: '.$fileToImportPath);
             $fileSystem = new Filesystem();
             if (!$fileSystem->exists([$fileToImportPath])) {
-                throw new \Exception('File not found: ' . $fileToImportPath);
+                throw new \Exception('File not found: '.$fileToImportPath);
             }
             $reader = new Reader();
             $reader->open($fileToImportPath);
@@ -139,7 +138,7 @@ class DataImporterService
             $this->logInfo('Import complete');
             $reader->close();
         } catch (\Throwable $e) {
-            throw new \Exception('Exception at line ' . $e->getLine() . ' [file: ' . $e->getFile() . '] :' . $e->getMessage(), $e->getCode());
+            throw new \Exception('Exception at line '.$e->getLine().' [file: '.$e->getFile().'] :'.$e->getMessage(), $e->getCode());
         }
     }
 }

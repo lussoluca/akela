@@ -7,21 +7,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: db_test
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
+      - uses: getong/mariadb-action@v1.11
+        with:
+          mariadb version: '10.11'
+          mysql database: 'db_test'
+          mysql root password: root
+
       - name: Setup PHP with PECL extension
         uses: shivammathur/setup-php@v2
         with:

@@ -40,7 +40,15 @@ class GroupDataImporterTest extends KernelTestCase
         $groupImporterService = new GroupImporterService($groupRepository);
         $groupImporterService->processGroups($data);
 
-        $this->assertTrue(true);
+        $group = $groupRepository->find('6622f234-eef6-4bc4-a21a-8d9e95049d68');
+
+        $this->assertEquals('Alessandria 2', $group->getName());
+        $this->assertEquals('O0931', $group->getCodiceOrdinale());
+        $this->assertEquals('IT20M0503410403000000000014', $group->getIban());
+        $this->assertEquals('Piazza Giovanni XXIII', $group->getAddress()->getAddressLine1());
+        $this->assertEquals('Alessandria', $group->getAddress()->getLocality());
+        $this->assertEquals('15121', $group->getAddress()->getPostalCode());
+        $this->assertEquals('Piemonte', $group->getAddress()->getAdministrativeArea());
     }
 
     protected function tearDown(): void

@@ -25,8 +25,10 @@ class Leader extends Person
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     protected ?Profile $profile = null;
 
+    /**
+     * @param Collection<int, RoleInUnit> $rolesInUnit
+     */
     public function __construct(
-        // @var Collection<int, App\Core\Domain\Model\RoleInUnit> $rolesInUnits
         Collection $rolesInUnit,
         ?Profile $profile = null,
         ?UuidV4 $id = null,
@@ -36,8 +38,10 @@ class Leader extends Person
         $this->id = $id ?: new UuidV4();
     }
 
+    /**
+     * @param Collection<int, RoleInUnit> $rolesInUnit
+     */
     public function update(
-        // @var Collection<int, App\Core\Domain\Model\RoleInUnit> $rolesInUnits
         Collection $rolesInUnit,
         ?Profile $profile = null,
     ): void {

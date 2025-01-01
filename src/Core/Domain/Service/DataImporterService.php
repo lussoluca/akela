@@ -41,16 +41,8 @@ class DataImporterService
             }
             $reader = new Reader();
             $reader->open($fileToImportPath);
-            $groups = [];
-            $groupsProcessed = false;
-            $units = [];
-            $unitsProcessed = false;
-            $profiles = [];
-            $profilesProcessed = false;
-            $leaders = [];
-            $leadersProcessed = false;
-            $scouts = [];
-            $scoutsProcessed = false;
+
+            $rowsData = [];
             foreach ($reader->getSheetIterator() as $sheet) {
                 // only read data from "summary" sheet
                 $i = 0;
@@ -68,71 +60,38 @@ class DataImporterService
 
                         $rowData[] = $value;
                     }
-                    if (!empty($rowData) && self::EXECL_WORKSHEET_GROUPS === strtolower($sheet->getName())) {
-                        $groups[] = $rowData;
-                    }
-                    if (!empty($rowData) && self::EXECL_WORKSHEET_UNITS === strtolower($sheet->getName())) {
-                        $units[] = $rowData;
-                    }
-                    if (!empty($rowData) && self::EXECL_WORKSHEET_PROFILES === strtolower($sheet->getName())) {
-                        $profiles[] = $rowData;
-                    }
-                    if (!empty($rowData) && self::EXECL_WORKSHEET_LEADERS === strtolower($sheet->getName())) {
-                        $leaders[] = $rowData;
-                    }
-                    if (!empty($rowData) && self::EXECL_WORKSHEET_SCOUTS === strtolower($sheet->getName())) {
-                        $scouts[] = $rowData;
-                    }
+                    $rowsData[] = $rowData;
                 }
 
-                if (!$groupsProcessed) {
+                if (!empty($rowData) && self::EXECL_WORKSHEET_GROUPS === strtolower($sheet->getName())) {
                     $this->logInfo('Processing groups');
                     $this->groupImporterService->setOverwrite($this->isOverwritable());
                     $this->groupImporterService->setLogger($this->logger);
-                    $this->groupImporterService->processGroups($groups);
-                    $groupsProcessed = true;
-
-                    continue;
+                    $this->groupImporterService->processGroups($rowsData);
                 }
-
-                if (!$unitsProcessed) {
+                if (!empty($rowData) && self::EXECL_WORKSHEET_UNITS === strtolower($sheet->getName())) {
                     $this->logInfo('Processing units');
                     $this->unitImporterService->setOverwrite($this->isOverwritable());
                     $this->unitImporterService->setLogger($this->logger);
-                    $this->unitImporterService->processUnits($units);
-                    $unitsProcessed = true;
-
-                    continue;
+                    $this->unitImporterService->processUnits($rowsData);
                 }
-
-                if (!$profilesProcessed) {
+                if (!empty($rowData) && self::EXECL_WORKSHEET_PROFILES === strtolower($sheet->getName())) {
                     $this->logInfo('Processing profiles');
                     $this->profileImporterService->setOverwrite($this->isOverwritable());
                     $this->profileImporterService->setLogger($this->logger);
-                    $this->profileImporterService->processProfiles($profiles);
-                    $profilesProcessed = true;
-
-                    continue;
+                    $this->profileImporterService->processProfiles($rowsData);
                 }
-
-                if (!$leadersProcessed) {
+                if (!empty($rowData) && self::EXECL_WORKSHEET_LEADERS === strtolower($sheet->getName())) {
                     $this->logInfo('Processing leaders');
                     $this->leaderImporterService->setOverwrite($this->isOverwritable());
                     $this->leaderImporterService->setLogger($this->logger);
-                    $this->leaderImporterService->processLeaders($leaders);
-                    $leadersProcessed = true;
-
-                    continue;
+                    $this->leaderImporterService->processLeaders($rowsData);
                 }
-
-                if (!$scoutsProcessed) {
+                if (!empty($rowData) && self::EXECL_WORKSHEET_SCOUTS === strtolower($sheet->getName())) {
                     $this->logInfo('Processing scouts');
                     $this->scoutImporterService->setOverwrite($this->isOverwritable());
                     $this->scoutImporterService->setLogger($this->logger);
-                    $this->scoutImporterService->processScouts($scouts);
-                    $scoutsProcessed = true;
-
-                    // continue;
+                    $this->scoutImporterService->processScouts($rowsData);
                 }
             }
             $this->logInfo('Import complete');

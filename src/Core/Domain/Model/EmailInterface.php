@@ -11,6 +11,9 @@ use Symfony\Component\Mime\Address;
  */
 interface EmailInterface
 {
+    /**
+     * @return non-empty-string
+     */
     public function getAddress(): string;
 
     public function toAddress(): Address;

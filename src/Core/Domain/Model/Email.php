@@ -11,6 +11,9 @@ use Symfony\Component\Mime\Address;
 #[Embeddable]
 class Email implements EmailInterface, \Stringable
 {
+    /**
+     * @var non-empty-string
+     */
     #[Column(type: 'string', length: 180, unique: false)]
     protected string $address;
 
@@ -19,6 +22,10 @@ class Email implements EmailInterface, \Stringable
      */
     public function __construct(string $address)
     {
+        if ('' === $address) {
+            throw new \InvalidArgumentException('Email address cannot be empty');
+        }
+
         $this->address = $address;
     }
 

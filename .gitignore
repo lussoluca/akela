@@ -28,3 +28,5 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 .codiumai
+
+/*.xlsx

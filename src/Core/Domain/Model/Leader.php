@@ -4,14 +4,12 @@ namespace App\Core\Domain\Model;
 
 use App\Core\Domain\Model\Traits\SoftDeleteableEntity;
 use App\Core\Domain\Model\Traits\TimestampableEntity;
-use App\Core\Infrastructure\Persistence\Repository\LeaderRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\UuidV4;
 
-#[ORM\Entity(repositoryClass: LeaderRepository::class)]
+#[ORM\Entity]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Leader extends Person
 {
@@ -21,16 +19,34 @@ class Leader extends Person
     /**
      * @var Collection<int, RoleInUnit> $rolesInUnits
      */
-    #[ORM\ManyToMany(targetEntity: RoleInUnit::class, inversedBy: 'leaders')]
-    private Collection $rolesInUnits;
+    #[ORM\ManyToMany(targetEntity: RoleInUnit::class, cascade: ['persist'])]
+    protected Collection $rolesInUnits;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Profile $profile = null;
+    protected ?Profile $profile = null;
 
-    public function __construct()
-    {
-        $this->id = new UuidV4();
-        $this->rolesInUnits = new ArrayCollection();
+    /**
+     * @param Collection<int, RoleInUnit> $rolesInUnit
+     */
+    public function __construct(
+        Collection $rolesInUnit,
+        ?Profile $profile = null,
+        ?UuidV4 $id = null,
+    ) {
+        $this->rolesInUnits = $rolesInUnit;
+        $this->profile = $profile;
+        $this->id = $id ?: new UuidV4();
+    }
+
+    /**
+     * @param Collection<int, RoleInUnit> $rolesInUnit
+     */
+    public function update(
+        Collection $rolesInUnit,
+        ?Profile $profile = null,
+    ): void {
+        $this->rolesInUnits = $rolesInUnit;
+        $this->profile = $profile;
     }
 
     /**

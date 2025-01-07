@@ -42,7 +42,7 @@ class UnitRepository
         $user = $this->objectRepository->find($id);
 
         if (null == $user) {
-            throw new UnitNotFoundException();
+            throw new UnitNotFoundException($id);
         }
 
         return $user;
@@ -55,5 +55,11 @@ class UnitRepository
         }
 
         return $this->objectRepository->find($id);
+    }
+
+    public function add(Unit $unit): void
+    {
+        $this->entityManager->persist($unit);
+        $this->entityManager->flush();
     }
 }

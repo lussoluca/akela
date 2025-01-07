@@ -22,25 +22,28 @@ class Unit implements UnitInterface
 
     #[Id]
     #[Column(type: 'uuid')]
-    private UuidV4 $id;
+    protected UuidV4 $id;
 
     #[Column(type: 'string', length: 255)]
-    private string $name;
+    protected string $name;
 
-    #[ManyToOne(targetEntity: 'App\Core\Domain\Model\Group', inversedBy: 'units')]
+    #[ManyToOne(targetEntity: Group::class, inversedBy: 'units')]
     #[JoinColumn(name: 'group_id', referencedColumnName: 'id')]
-    private GroupInterface $group;
+    protected GroupInterface $group;
 
     #[Column(enumType: UnitType::class)]
-    private ?UnitType $type = null;
+    protected ?UnitType $type = null;
 
     public function __construct(
         string $name,
+        UnitType $type,
         GroupInterface $group,
+        ?UuidV4 $id = null,
     ) {
-        $this->id = new UuidV4();
         $this->name = $name;
         $this->group = $group;
+        $this->type = $type;
+        $this->id = $id ?: new UuidV4();
     }
 
     public function getGroup(): GroupInterface
@@ -65,6 +68,16 @@ class Unit implements UnitInterface
 
     public function setType(UnitType $type): static
     {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function update(
+        string $name,
+        UnitType $type,
+    ): self {
+        $this->name = $name;
         $this->type = $type;
 
         return $this;

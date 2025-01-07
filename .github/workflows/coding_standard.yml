@@ -1,6 +1,6 @@
 name: Coding standard
 
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
   build:
@@ -8,38 +8,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup PHP with PECL extension
-      uses: shivammathur/setup-php@v2
-      with:
-       php-version: '8.3'
-       extensions: json, openssl, pdo, redis
-    - uses: actions/checkout@v4
+      - uses: getong/mariadb-action@v1.11
+        with:
+          mariadb version: '10.11'
+          mysql database: 'db_test'
+          mysql root password: root
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: json, openssl, pdo, redis
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v4
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
 
-    - name: Phpstan
-      run: |
-        composer install --working-dir=tools/phpstan
-        tools/phpstan/vendor/bin/phpstan
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
 
-    - name: PHP Coding Standards Fixer
-      run: |
-        composer install --working-dir=tools/php-cs-fixer
-        tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: PHPUnit
-      run: |
-        bin/phpunit
+      - name: Phpstan
+        run: |
+          composer install --working-dir=tools/phpstan
+          tools/phpstan/vendor/bin/phpstan
+
+      - name: PHP Coding Standards Fixer
+        run: |
+          composer install --working-dir=tools/php-cs-fixer
+          tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation
+
+      - name: PHPUnit
+        run: |
+          bin/console doctrine:schema:update --env=test --force
+          bin/phpunit

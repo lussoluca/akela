@@ -42,7 +42,7 @@ class UserRepository
         $user = $this->objectRepository->find($id);
 
         if (null == $user) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException($id);
         }
 
         return $user;

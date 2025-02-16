@@ -1,5 +1,0 @@
-controllers:
-  resource:
-    path: ../src/Core/Presentation/Controller/
-    namespace: App\Core\Presentation\Controller
-  type: attribute

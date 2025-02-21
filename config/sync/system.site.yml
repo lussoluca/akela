@@ -2,7 +2,7 @@ _core:
   default_config_hash: HlN7eAN2N4JIHsYv56V4E7sqC9bS609KwvGFjyD_mgk
 langcode: en
 uuid: 313f3c7d-069d-4fa9-98cd-66089fd5d220
-name: 'Drush Site-Install'
+name: Akela
 mail: admin@example.com
 slogan: ''
 page:

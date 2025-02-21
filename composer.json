@@ -1,124 +1,101 @@
 {
-  "name": "symfony/skeleton",
-  "type": "project",
-  "license": "MIT",
-  "description": "A minimal Symfony project recommended to create bare bones applications",
-  "minimum-stability": "stable",
-  "prefer-stable": true,
-  "require": {
-    "php": ">=8.3",
-    "ext-ctype": "*",
-    "ext-iconv": "*",
-    "beberlei/assert": "^3.3",
-    "commerceguys/addressing": "^2.2",
-    "doctrine/dbal": "^4.2",
-    "doctrine/doctrine-bundle": "^2.13",
-    "doctrine/doctrine-migrations-bundle": "^3.3",
-    "doctrine/orm": "^3.2",
-    "gedmo/doctrine-extensions": "^3.17",
-    "jetbrains/phpstorm-attributes": "^1.1",
-    "openspout/openspout": "^4.24",
-    "phpdocumentor/reflection-docblock": "^5.4",
-    "phpstan/phpdoc-parser": "^1.29",
-    "stof/doctrine-extensions-bundle": "^1.12",
-    "symfony/asset": "7.2.*",
-    "symfony/asset-mapper": "7.2.*",
-    "symfony/console": "7.2.*",
-    "symfony/doctrine-messenger": "7.2.*",
-    "symfony/dotenv": "7.2.*",
-    "symfony/expression-language": "7.2.*",
-    "symfony/filesystem": "7.2.*",
-    "symfony/flex": "^2",
-    "symfony/form": "7.2.*",
-    "symfony/framework-bundle": "7.2.*",
-    "symfony/http-client": "7.2.*",
-    "symfony/intl": "7.2.*",
-    "symfony/mailer": "7.2.*",
-    "symfony/messenger": "7.2.*",
-    "symfony/mime": "7.2.*",
-    "symfony/monolog-bundle": "^3.0",
-    "symfony/notifier": "7.2.*",
-    "symfony/password-hasher": "7.2.*",
-    "symfony/process": "7.2.*",
-    "symfony/property-access": "7.2.*",
-    "symfony/property-info": "7.2.*",
-    "symfony/runtime": "7.2.*",
-    "symfony/security-bundle": "7.2.*",
-    "symfony/serializer": "7.2.*",
-    "symfony/stimulus-bundle": "^2.18",
-    "symfony/string": "7.2.*",
-    "symfony/translation": "7.2.*",
-    "symfony/twig-bundle": "7.2.*",
-    "symfony/uid": "7.2.*",
-    "symfony/ux-turbo": "^2.18",
-    "symfony/validator": "7.2.*",
-    "symfony/web-link": "7.2.*",
-    "symfony/yaml": "7.2.*",
-    "symfonycasts/reset-password-bundle": "^1.22",
-    "symfonycasts/tailwind-bundle": "^0.6.0",
-    "twig/extra-bundle": "^2.12|^3.0",
-    "twig/twig": "^2.12|^3.0"
-  },
-  "config": {
-    "allow-plugins": {
-      "php-http/discovery": true,
-      "symfony/flex": true,
-      "symfony/runtime": true
+    "name": "drupal/recommended-project",
+    "description": "Project template for Drupal projects with a relocated document root",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://www.drupal.org/project/drupal",
+    "support": {
+        "docs": "https://www.drupal.org/docs/user_guide/en/index.html",
+        "chat": "https://www.drupal.org/node/314178"
     },
-    "sort-packages": true
-  },
-  "autoload": {
-    "psr-4": {
-      "App\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "App\\Tests\\": "tests/"
-    }
-  },
-  "replace": {
-    "symfony/polyfill-ctype": "*",
-    "symfony/polyfill-iconv": "*",
-    "symfony/polyfill-php72": "*",
-    "symfony/polyfill-php73": "*",
-    "symfony/polyfill-php74": "*",
-    "symfony/polyfill-php80": "*",
-    "symfony/polyfill-php81": "*",
-    "symfony/polyfill-php82": "*"
-  },
-  "scripts": {
-    "auto-scripts": {
-      "cache:clear": "symfony-cmd",
-      "assets:install %PUBLIC_DIR%": "symfony-cmd",
-      "importmap:install": "symfony-cmd"
-    },
-    "post-install-cmd": [
-      "@auto-scripts"
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
     ],
-    "post-update-cmd": [
-      "@auto-scripts"
-    ]
-  },
-  "conflict": {
-    "symfony/symfony": "*"
-  },
-  "extra": {
-    "symfony": {
-      "allow-contrib": false,
-      "require": "7.2.*",
-      "docker": false
+    "require": {
+        "composer/installers": "^2.3",
+        "drupal/core-composer-scaffold": "^11.1",
+        "drupal/core-project-message": "^11.1",
+        "drupal/core-recommended": "^11.1",
+        "drupal/gin": "^4.0",
+        "drush/drush": "^13.3"
+    },
+    "conflict": {
+        "drupal/drupal": "*"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "php-http/discovery": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "web/"
+            }
+        },
+        "installer-paths": {
+            "web/core": [
+                "type:drupal-core"
+            ],
+            "web/libraries/{$name}": [
+                "type:drupal-library"
+            ],
+            "web/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "web/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "web/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "drush/Commands/contrib/{$name}": [
+                "type:drupal-drush"
+            ],
+            "web/modules/custom/{$name}": [
+                "type:drupal-custom-module"
+            ],
+            "web/profiles/custom/{$name}": [
+                "type:drupal-custom-profile"
+            ],
+            "web/themes/custom/{$name}": [
+                "type:drupal-custom-theme"
+            ],
+            "recipes/{$name}": [
+                "type:drupal-recipe"
+            ]
+        },
+        "drupal-core-project-message": {
+            "include-keys": [
+                "homepage",
+                "support"
+            ],
+            "post-create-project-cmd-message": [
+                "<bg=blue;fg=white>                                                         </>",
+                "<bg=blue;fg=white>  Congratulations, you’ve installed the Drupal codebase  </>",
+                "<bg=blue;fg=white>  from the drupal/recommended-project template!          </>",
+                "<bg=blue;fg=white>                                                         </>",
+                "",
+                "<bg=yellow;fg=black>Next steps</>:",
+                "  * Install the site: https://www.drupal.org/docs/installing-drupal",
+                "  * Read the user guide: https://www.drupal.org/docs/user_guide/en/index.html",
+                "  * Get support: https://www.drupal.org/support",
+                "  * Get involved with the Drupal community:",
+                "      https://www.drupal.org/getting-involved",
+                "  * Remove the plugin that prints this message:",
+                "      composer remove drupal/core-project-message"
+            ]
+        }
     }
-  },
-  "require-dev": {
-    "doctrine/doctrine-fixtures-bundle": "^3.6",
-    "phpunit/phpunit": "^9.5",
-    "symfony/browser-kit": "7.2.*",
-    "symfony/css-selector": "7.2.*",
-    "symfony/debug-bundle": "7.2.*",
-    "symfony/maker-bundle": "^1.0",
-    "symfony/phpunit-bridge": "^7.1",
-    "symfony/stopwatch": "7.2.*",
-    "symfony/web-profiler-bundle": "7.2.*"
-  }
 }

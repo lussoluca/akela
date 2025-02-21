@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-## Description: Build the website.
+## Description: Build the site
 ## Usage: build
+## Example: ddev build
 
 composer install
-console tailwind:build
-console doctrine:migrations:migrate --no-interaction
-console cache:clear
+drush si --existing-config --account-pass=admin -y
+drush cr
